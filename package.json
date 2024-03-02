@@ -1,7 +1,10 @@
 {
     "scripts": {
+        "build-server": "cd server && npm install",
+        "build-client": "cd client && npm install",
         "start-server": "cd server && npm start",
         "start-client": "cd client && npm start",
+        "build": "npm run build-server && npm run build-client",
         "start": "concurrently \"npm run start-server\" \"npm run start-client\""
     },
     "devDependencies": {
