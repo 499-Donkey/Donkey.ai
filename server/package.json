@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/server.js",
   "scripts": {
     "start": "nodemon src/server.ts",
@@ -29,5 +28,6 @@
     "http-errors": "^2.0.0",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0"
-  }
+  },
+  "description": ""
 }
