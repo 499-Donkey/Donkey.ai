@@ -21,8 +21,6 @@ Donkey.AI is a powerful tool for automated video content analysis. It simplifies
 - **Automated Transcription:** Convert audio from videos into text transcripts.
 - **AI Analysis:** Analyze text content using advanced AI algorithms to identify key segments.
 - **Customizable Summaries:** Generate interactive summaries tailored to user preferences.
-- **Sentiment Analysis:** Evaluate the emotional tone of video content to provide deeper insights.
-- **Multilingual Support:** Translate and transcribe videos in multiple languages.
 - **Interactive Queries:** Enable users to search for specific information within videos using natural language queries.
 - **Community Sharing:** Foster knowledge sharing and collaborative learning through a user community for sharing video summaries and insights.
 
