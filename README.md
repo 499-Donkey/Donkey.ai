@@ -33,9 +33,8 @@ To get started with Donkey.AI, follow these steps:
 3. Install dependencies: `npm install`
 4. Start the development server: `npm start`
 5. Create a new terminal and navigate to the client directory: `cd client`
-6. Install dependencies: `npm install`
-7. Start the development client: `npm start`
-8. Access the application at [http://localhost:3000](http://localhost:3000)
+6. Start the development client: `npm start`
+7. Access the application at [http://localhost:3000](http://localhost:3000)
 
 For detailed instructions on deploying and using Donkey.AI, refer to the [documentation](docs/README.md).
 
