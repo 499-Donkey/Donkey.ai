@@ -41,7 +41,7 @@ app.use("/api/scripts", scriptRoutes);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-//app.use("/api/upload", upload.array('file'), uploadRoutes);
+//app.use("/api/upload",  uploadRoutes);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
