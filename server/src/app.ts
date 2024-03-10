@@ -30,7 +30,6 @@ app.use(session({
 
 app.use("/api/users", userRoutes);
 app.use("/api/scripts", scriptRoutes);
-
 app.use("/api/upload",  uploadRoutes);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
