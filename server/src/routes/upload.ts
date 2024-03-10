@@ -9,6 +9,6 @@ router.use(cors());
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-router.post('/upload', upload.array('file'), UploadController.uploadFile);
+router.post('/', upload.array('file'), UploadController.uploadFile);
 
 export default router;
