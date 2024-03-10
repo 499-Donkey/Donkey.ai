@@ -80,18 +80,22 @@ const Upload: React.FC = () => {
       </form>
 
       <div className="result-container">
-        {transcript && (
-          <div>
-            <h2>Transcript</h2>
-            <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{transcript}</pre>
-          </div>
-        )}
-        {analysis && (
-          <div>
-            <h2>Analysis</h2>
-            <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{analysis}</pre>
-          </div>
-        )}
+        <div className="transcript">
+          {transcript && (
+            <div>
+              <h2>Transcript</h2>
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{transcript}</pre>
+            </div>
+          )}
+        </div>
+        <div className="analysis">
+          {analysis && (
+            <div>
+              <h2>Analysis</h2>
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{analysis}</pre>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

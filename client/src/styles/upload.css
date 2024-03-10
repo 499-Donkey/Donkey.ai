@@ -32,22 +32,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 80%;
+  border: 2px solid #000;
 }
 
 .transcript {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  width: 100%;
-  margin-bottom: 10px;
+  width: 90%;
+  margin: 10px;
   overflow: auto;
+  border: 2px dotted #000;
 }
 
 .analysis {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  width: 100%;
+  width: 90%;
+  margin: 10px;
   overflow: auto;
+  border: 2px dotted #000;
 }
