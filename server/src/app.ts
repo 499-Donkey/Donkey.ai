@@ -2,6 +2,7 @@ import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import scriptRoutes from "./routes/scripts";
 import userRoutes from "./routes/users";
+import uploadRoutes from "./routes/upload";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
@@ -29,10 +30,7 @@ app.use(session({
 
 app.use("/api/users", userRoutes);
 app.use("/api/scripts", scriptRoutes);
-
-app.use((req, res, next) => {
-    next(createHttpError(404, "Endpoint not found"));
-});
+app.use("/api/upload",  uploadRoutes);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
@@ -44,6 +42,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
         errorMessage = error.message;
     } 
     res.status(statusCode).json({ error: errorMessage });
+});
+
+//use for reference and testing purposes
+app.use((req, res, next) => {
+  next(createHttpError(404, "Endpoint not found"));
 });
 
 export default app;

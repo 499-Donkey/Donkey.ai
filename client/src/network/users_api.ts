@@ -38,7 +38,8 @@ export async function signUp(credentials: SignUpCredentials): Promise<User> {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
-        });
+        }
+        );
     return response.json();
 }
 
