@@ -39,6 +39,47 @@ export const uploadFile = async (
   }
 };
 
+export const chatWithUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction) => {
+  console.log("trying to chat")
+  try{
+    const transcriptFilePath = path.join(__dirname, "../result/transcript.txt");
+    const transcript = fs.readFileSync(transcriptFilePath, "utf8");
+
+    const data = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
+        { role: "user", content: "Please answer the question based on the transcripts, which is form video or audio:" },
+        { role: "user", content: transcript },
+        { role: "user", content: req.body.question },
+      ],
+    };
+
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const answer = response.data.choices[0].message.content;
+    res.status(200).json({ answer })
+  }
+  catch(error){
+    next(error);
+    res.status(500).json({ error: "Error passing chat" });
+  }
+
+
+}
+
 async function getTranscript(audioFilePath: string) {
   try {
     const formData = new FormData();
@@ -93,3 +134,4 @@ async function getChatGPTAnalysis(transcript: string) {
     throw new Error("Error in getChatGPTAnalysis");
   }
 }
+

@@ -11,4 +11,6 @@ const upload = multer({ storage: storage });
 
 router.post('/', upload.array('file'), UploadController.uploadFile);
 
+router.post('/chat',  UploadController.chatWithUser);
+
 export default router;

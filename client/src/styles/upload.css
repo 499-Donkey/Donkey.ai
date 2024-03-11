@@ -55,3 +55,12 @@
   overflow: auto;
   border: 2px dotted #000;
 }
+
+.chat-history {
+  height: 600px; 
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  border: 2px solid #000;
+}

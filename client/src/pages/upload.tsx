@@ -1,12 +1,26 @@
-// Assuming the API response structure as mentioned above
-
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/upload.css";
+import { getChatResponse } from "../network/chats_api";
 
 const Upload: React.FC = () => {
   const fileInputsContainerRef = useRef<HTMLDivElement | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
+  const [userQuestion, setUserQuestion] = useState<string>("");
+  const [chatHistory, setChatHistory] = useState<{ question: string, response: any }[]>([]);
+  
+
+  const handleChatSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await getChatResponse(userQuestion);
+      setChatHistory([...chatHistory, { question: userQuestion, response }]);
+      setUserQuestion("");
+    }
+    catch (error){
+      console.error('Chat error:', error);
+    }
+  };
 
   const UploadSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -31,7 +45,6 @@ const Upload: React.FC = () => {
       const jsonResponse = await response.json();
       setTranscript(jsonResponse.transcript);
       setAnalysis(jsonResponse.analysis);
-      
     } catch (error: any) {
       console.error("Authentication error:", error);
     }
@@ -84,7 +97,9 @@ const Upload: React.FC = () => {
           {transcript && (
             <div>
               <h2>Transcript</h2>
-              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{transcript}</pre>
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                {transcript}
+              </pre>
             </div>
           )}
         </div>
@@ -92,10 +107,40 @@ const Upload: React.FC = () => {
           {analysis && (
             <div>
               <h2>Analysis</h2>
-              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{analysis}</pre>
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                {analysis}
+              </pre>
             </div>
           )}
         </div>
+      </div>
+
+      <div className="chat-history">
+        {chatHistory.map((item, index) => (
+          <div key={index} className="chat-history-item">
+            <>You:</>
+            <div className="chat-question">{item.question}</div>
+            <>Donkey:</>
+            <div className="chat-response">{item.response.answer}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="chatbox">
+        <form onSubmit={handleChatSubmit}>
+          <input
+            type="text"
+            name="question"
+            value={userQuestion}
+            onChange={(e) => setUserQuestion(e.target.value)}
+            placeholder="Enter your question"
+            required
+          />
+
+
+          <button type="submit">submit</button>
+        </form>
+
       </div>
     </div>
   );
