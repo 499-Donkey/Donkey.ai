@@ -96,34 +96,35 @@ const Upload: React.FC = () => {
         <div className="transcript">
           {transcript && (
             <div>
-              <h2>Transcript</h2>
-              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
-                {transcript}
-              </pre>
+              <Accordion>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><h2>Transcript</h2></Accordion.Header>
+                    <Accordion.Body>
+                      <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                        {transcript}
+                      </pre>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
             </div>
           )}
         </div>
         <div className="analysis">
           {analysis && (
             <div>
-              <h2>Analysis</h2>
-              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
-                {analysis}
-              </pre>
+              <Accordion>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header><h2>Analysis</h2></Accordion.Header>
+                    <Accordion.Body>
+                        <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                        {analysis}
+                        </pre>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
             </div>
           )}
         </div>
-      </div>
-
-      <div className="chat-history">
-        {chatHistory.map((item, index) => (
-          <div key={index} className="chat-history-item">
-            <>You:</>
-            <div className="chat-question">{item.question}</div>
-            <>Donkey:</>
-            <div className="chat-response">{item.response.answer}</div>
-          </div>
-        ))}
       </div>
 
       <div className="chatbox">
