@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
+import { Accordion } from "react-bootstrap";
 
 const Upload: React.FC = () => {
   const fileInputsContainerRef = useRef<HTMLDivElement | null>(null);
