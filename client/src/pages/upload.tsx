@@ -5,6 +5,7 @@ import Accordion from "react-bootstrap/esm/Accordion";
 import { FaTrashCan } from "react-icons/fa6";
 import { createRoot } from 'react-dom/client';
 
+
 const Upload: React.FC = () => {
   const fileInputsContainerRef = useRef<HTMLDivElement | null>(null);
   const chatHistoryRef = useRef<HTMLDivElement | null>(null);
@@ -149,6 +150,7 @@ const Upload: React.FC = () => {
               <Accordion>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header><h2>Analysis</h2></Accordion.Header>
+
                   <Accordion.Body>
                     <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
                       {analysis}
@@ -156,6 +158,7 @@ const Upload: React.FC = () => {
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
+
             </div>
           )}
         </div>
@@ -184,6 +187,7 @@ const Upload: React.FC = () => {
             style={{ paddingRight: '60px' }}
           />
           <button type="submit" style={{ position: 'absolute', top: 0, right: 0 }}>Submit</button>
+
         </form>
       </div>
 
