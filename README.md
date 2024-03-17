@@ -28,10 +28,11 @@ Donkey.AI is a powerful tool for automated video content analysis. It simplifies
 To get started with Donkey.AI, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/donkey-ai.git`
-2. `npm install`
-3. `npm run build`
-4. Window: `npm run start-win`, Mac: `npm run start-mac`
-5. Access the application at [http://localhost:3000](http://localhost:3000)
+2. Navigate to the Project Directory: `cd donkey-ai`
+3. Install Dependencies: `npm install`
+4. Build the Project: `npm run build`
+5. Windows: `npm run start-win`, MacOS: `npm run start-mac`
+6. Access the application at [http://localhost:3000](http://localhost:3000)
 
 For detailed instructions on deploying and using Donkey.AI, refer to the [documentation](docs/README.md).
 
