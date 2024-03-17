@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    /* Apply Roboto to all navbar elements */
+}
+
+.navbar .brand-logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .brand-logo img {
+    height: 60px;
+}
+
+.navbar .web-name {
+    color: #333;
+    /* Text color for the web name */
+    font-weight: 700;
+    /* Bold text for the web name */
+    font-size: 1.8rem;
+    /* Size of the web name */
+    margin-left: 10px;
+    margin-right: 40px;
+    font-family: 'Roboto', sans-serif;
+    /* Apply Roboto to all navbar elements */
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    /* Remove bullet points from list items */
+    margin: 0;
+    /* Reset default margin */
+    padding: 0;
+    /* Reset default padding */
+    margin-right: auto;
+    /* Aligns the button to the right */
+}
+
+.nav-links a {
+    color: #333;
+    /* Dark text color for the links */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    /* Assuming a bold font weight */
+    transition: color 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.nav-links a:hover,
+.nav-links .active-link {
+    color: #007bff;
+    /* Highlight color for active/hover state */
+}
+
+.nav-action-buttons {
+    display: flex;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    /* Apply Roboto to all navbar elements */
+}
+
+.auth-button {
+    padding: 0.5rem 1rem;
+    border: 2px solid #0056b3;
+    /* Same as the Upgrade button but with a border */
+    border-radius: 19px;
+    /* Rounded edges */
+    background-color: transparent;
+    /* No background */
+    color: #007bff;
+    /* Blue text color */
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    /* Remove underline from link */
+    display: inline-block;
+    /* To allow padding and other box model properties */
+    transition: all 0.3s;
+    /* Smooth transition for hover and background effect */
+    margin-right: 10px;
+}
+
+.auth-button:hover {
+    background-color: #e7f5ff;
+    /* Light blue background on hover */
+    border-color: #0056b3;
+    /* Darker border on hover */
+    color: #0056b3;
+    /* Darker text color on hover */
+}
+
+.upgrade-button {
+    padding: 0.5rem 1rem;
+    border: 2px solid #0056b3;
+    border-radius: 19px;
+    /* Rounded edges */
+    background-color: #007bff;
+    /* Background color */
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    /* Remove underline from link */
+    display: inline-block;
+    /* To allow padding and other box model properties */
+    transition: background-color 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.upgrade-button:hover {
+    background-color: #0056b3;
+    /* Darker shade on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        /* Hide links on smaller screens */
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .nav-action-buttons {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .upgrade-button {
+        margin-left: auto;
+        /* Aligns the button to the right */
+    }
+}
