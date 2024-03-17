@@ -128,6 +128,17 @@ const Upload: React.FC = () => {
         </div>
       </div>
 
+      <div className="chat-history">
+        {chatHistory.map((item, index) => (
+          <div key={index} className="chat-history-item">
+            <>You:</>
+            <div className="chat-question">{item.question}</div>
+            <>Donkey:</>
+            <div className="chat-response">{item.response.answer}</div>
+          </div>
+        ))}
+      </div>
+
       <div className="chatbox">
         <form onSubmit={handleChatSubmit}>
           <input
@@ -138,8 +149,6 @@ const Upload: React.FC = () => {
             placeholder="Enter your question"
             required
           />
-
-
           <button type="submit">submit</button>
         </form>
 
