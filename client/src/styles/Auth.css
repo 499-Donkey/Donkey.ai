@@ -1,0 +1,209 @@
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc; /* 添加边框 */
+  border-radius: 8px; /* 圆角边框 */
+}
+
+.auth-logo {
+  font-size: 2em; /* Logo的字体大小 */
+  margin-bottom: 20px;
+  font-weight: bold; /* 设置Logo文字为粗体 */
+}
+
+.auth-title {
+  margin-bottom: 20px;
+  font-weight: bold;
+  line-height: 1.5; /* 增加行间距 */
+}
+
+.social-login > button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 确保内容靠左对齐 */
+  margin: 10px 0;
+  width: 100%;
+  padding: 10px 20px; /* 增加内边距 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold; /* 使所有按钮的文字都是粗体 */
+  position: relative; /* 用于定位文字 */
+  background-color: #fff; /* 根据需要设置按钮背景颜色 */
+  border: 1px solid #ccc; /* 添加一个灰色边框 */
+  border-radius: 4px; /* 如果你想要圆角边框的话 */
+  transition: all 0.3s ease; /* 可选：添加一些过渡动画效果 */
+}
+.social-button:hover {
+  border-color: #000; /* 鼠标悬停时边框颜色变深 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 可选：增加悬停时的阴影 */
+}
+
+.social-login > button img {
+  margin-right: 10px; /* 在图标和文本之间添加一些空间 */
+  width: 24px; /* 为图标设置一个统一的宽度 */
+  height: auto; /* 保持图标的高度与宽度比例 */
+}
+
+.button-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50%; /* 确保文本在按钮垂直居中 */
+  transform: translateY(-50%); /* 使用transform将文本上移自身高度的一半 */
+  text-align: center;
+  font-weight: bold;
+  color: #000; /* 或者任何你希望的颜色 */
+  z-index: 2; /* 确保文本在最上面 */
+}
+
+
+.google {
+  background: #db4437;
+  color: white;
+}
+
+.microsoft {
+  background: #2F2F2F;
+  color: white;
+}
+
+.apple {
+  background: #A3AAAE;
+  color: white;
+}
+
+.divider {
+  position: relative;
+  height: 1em; /* 给定一个固定的高度 */
+  border-top: 1px solid #ccc; /* 上边框为分割线 */
+  margin-top: 30px; /* 增加分割线与上面内容的距离 */
+  margin-bottom: 50px; /* 增加分割线与下面内容的距离 */
+  text-align: center;
+}
+
+.divider::before {
+  content: 'OR';
+  position: absolute;
+  top: -10px; /* 需要根据实际情况调整，以垂直居中 */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff; /* 设置为与.auth-container背景色相同 */
+  color: #666;
+  padding: 0 10px;
+}
+
+
+.auth-form input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 30px; /* 控制输入框之间的间距 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 1.5; /* 增加输入框内的行间距 */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-form input:hover,
+.auth-form input:focus {
+  border-color: #000; /* 鼠标悬停或输入框被选中时边框颜色变深 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 添加阴影 */
+}
+
+.sign-in-button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px; /* 控制按钮下方的空间 */
+  border: none;
+  border-radius: 4px;
+  background: #1a73e8;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1.5; /* 如果按钮内文本需要更多空间 */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.sign-in-button:hover {
+  background-color: #0c66d1; /* 鼠标悬停时背景颜色变深 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 添加阴影 */
+}
+
+.links {
+  margin: 20px 0;
+}
+
+.links a {
+  color: #1a73e8;
+  text-decoration: none;
+  display: block; /* 让链接独占一行 */
+  margin: 5px 0; /* 控制链接之间的间距，可以根据需要调整 */
+  line-height: 1.5; /* 增加链接文本的行间距 */
+}
+
+.auth-footer {
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 20px;
+}
+
+.auth-footer a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.social-logo {
+  width: 24px; /* 这会将图标的宽度设置为24像素 */
+  height: auto; /* 高度自动调整以保持比例 */
+}
+
+.auth-links {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forgot-password,
+.create-account {
+  margin: 5px 0; /* 增加链接之间的间距 */
+}
+
+/* 基本按钮样式 */
+.top-button {
+  font-size: 16px; /* 调整为适当的大小 */
+  color: #007BFF; /* 蓝色文字 */
+  background-color: transparent; /* 透明背景 */
+  padding: 10px 20px; /* 上下10px，左右20px的内边距 */
+  margin: 0 10px; /* 按钮之间左右各10px的外边距 */
+  border: none; /* 无边框 */
+  border-radius: 5px; /* 轻微的圆角 */
+  text-decoration: none; /* 去掉下划线 */
+  cursor: pointer; /* 鼠标悬浮时出现手形图标 */
+  transition: background-color 0.3s, color 0.3s; /* 平滑过渡效果 */
+}
+
+/* 鼠标悬浮在按钮上时的样式 */
+.top-button:hover {
+  background-color: #E0E0E0; /* 浅灰色背景 */
+  color: #333; /* 深色文字 */
+  text-decoration: none; /* 仍然去掉下划线 */
+}
+
+/* 可以根据需要给当前活跃的按钮或页面对应的按钮添加特殊样式 */
+.top-button.active {
+  color: #FFF;
+  background-color: #007BFF;
+}
+
+/* 如果你的按钮在一个导航条中，也可以设置导航条的样式 */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* 如果按钮需要分布在导航条两边 */
+  align-items: center; /* 垂直居中 */
+  padding: 10px; /* 导航条的内边距 */
+  background-color: #F8F9FA; /* 导航条的背景色 */
+  /* 更多样式 */
+}

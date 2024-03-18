@@ -5,7 +5,6 @@ import Accordion from "react-bootstrap/esm/Accordion";
 import { FaTrashCan } from "react-icons/fa6";
 import { createRoot } from 'react-dom/client';
 
-
 const Upload: React.FC = () => {
   const fileInputsContainerRef = useRef<HTMLDivElement | null>(null);
   const chatHistoryRef = useRef<HTMLDivElement | null>(null);
