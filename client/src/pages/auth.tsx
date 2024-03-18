@@ -1,10 +1,10 @@
 
 // Auth.tsx
 import React, { useState } from 'react';
-import '../styles/Auth.css'; // 确保这个路径正确地指向你的CSS文件
-import googleLogo from '../asserts/images/google-logo.svg'; // 图片文件路径更新
-import microsoftLogo from '../asserts/images/microsoft-logo.svg';
-import appleLogo from '../asserts/images/apple-logo.svg';
+import '../styles/Auth.css';
+import googleLogo from '../assets/google-logo.svg';
+import microsoftLogo from '../assets/microsoft-logo.svg';
+import appleLogo from '../assets/apple-logo.svg';
 import { Link } from 'react-router-dom';
 
 
@@ -66,18 +66,5 @@ const Auth = () => {
         </div>
     );
 };
-
-
-//function handleGoogleLogin() {
-  // 在这里添加调用Google登录服务的代码
-// }
-
-//function handleAppleLogin() {
-  // 在这里添加调用Google登录服务的代码
-// }
-
-//function handleMicrosoftLogin() {
-  // 在这里添加调用Google登录服务的代码
-// }
 
 export default Auth;
