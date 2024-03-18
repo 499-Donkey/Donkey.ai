@@ -8,8 +8,15 @@ import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
 import env from "./util/validateEnv";
 import MongoStore  from "connect-mongo";
+//import bodyParser from "body-parser";
 
 const app = express();
+
+/*
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(bodyParser.json());
+*/
 
 app.use(morgan("dev"));
 
