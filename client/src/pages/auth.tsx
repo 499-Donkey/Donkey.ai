@@ -1,72 +1,83 @@
+
+// Auth.tsx
 import React, { useState } from 'react';
-import { login, signUp, LoginCredentials, SignUpCredentials } from '../network/users_api';
+import '../styles/Auth.css'; // 确保这个路径正确地指向你的CSS文件
+import googleLogo from '../asserts/images/google-logo.svg'; // 图片文件路径更新
+import microsoftLogo from '../asserts/images/microsoft-logo.svg';
+import appleLogo from '../asserts/images/apple-logo.svg';
+import { Link } from 'react-router-dom';
 
-const Auth: React.FC = () => {
-    const [isLogin, setIsLogin] = useState(true);
-    const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({ username: '', password: '' });
-    const [signUpCredentials, setSignUpCredentials] = useState<SignUpCredentials>({ username: '', password: '', email: '' });
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (isLogin) {
-            setLoginCredentials({ ...loginCredentials, [event.target.name]: event.target.value });
-        } else {
-            setSignUpCredentials({ ...signUpCredentials, [event.target.name]: event.target.value });
-        }
-    };
+
+const Auth = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        try {
-            if (isLogin) {
-                const user = await login(loginCredentials);
-                console.log('Logged in user:', user);
-            } else {
-                const user = await signUp(signUpCredentials);
-                console.log('Registered user:', user);
-            }
-        } catch (error) {
-            console.error('Authentication error:', error);
-        }
+        console.log('Email:', email, 'Password:', password);
     };
 
     return (
-        <div className="container">
-            <h1>{isLogin ? 'Login' : 'Register'}</h1>
-            <form onSubmit={handleSubmit}>
+        
+        <div className="auth-container">
+            <div className="auth-logo">Donkey.AI</div>
+            <div className="auth-title">Sign In</div>
+            <div className="social-login">
+                <button className="social-button google">
+                    <img src={googleLogo} alt="Google" className="social-logo" />
+                    <span className="button-text">Continue with Google</span>
+                </button>
+                <button className="social-button microsoft" >
+                    <img src={microsoftLogo} alt="Microsoft" className="social-logo" />
+                    <span className="button-text">Continue with Microsoft</span>
+                </button>
+                <button className="social-button apple" >
+                    <img src={appleLogo} alt="Apple" className="social-logo" />
+                    <span className="button-text">Continue with Apple</span>
+                </button>
+            </div>
+            <div className="auth-links">
+                <Link to="/forgot-password" className="forgot-password">Forgot your password?</Link>
+                <Link to="/create-account" className="create-account">Create Account</Link>
+            </div>
+            <div className="divider"></div>
+            <form onSubmit={handleSubmit} className="auth-form">
                 <input
-                    type="text"
-                    name="username"
-                    value={isLogin ? loginCredentials.username : signUpCredentials.username}
-                    onChange={handleChange}
-                    placeholder="Username"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
                     required
                 />
-                {!isLogin && (
-                    <input
-                        type="email"
-                        name="email"
-                        value={signUpCredentials.email}
-                        onChange={handleChange}
-                        placeholder="Email"
-                        required
-                    />
-                )}
                 <input
                     type="password"
-                    name="password"
-                    value={isLogin ? loginCredentials.password : signUpCredentials.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     required
                 />
-                <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                <button type="submit" className="sign-in-button">Sign in</button>
             </form>
-            <button onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-            </button>
+            
+            <div className="auth-footer">
+                By using Donkey.AI you agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
         </div>
     );
 };
 
-export default Auth;
 
+//function handleGoogleLogin() {
+  // 在这里添加调用Google登录服务的代码
+// }
+
+//function handleAppleLogin() {
+  // 在这里添加调用Google登录服务的代码
+// }
+
+//function handleMicrosoftLogin() {
+  // 在这里添加调用Google登录服务的代码
+// }
+
+export default Auth;

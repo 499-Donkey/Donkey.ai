@@ -1,0 +1,177 @@
+/* CreateAccount.css */
+.create-account-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 确保在垂直方向上也居中 */
+  min-height: 100vh; /* 确保包装器占满视口的高度 */
+  padding: 0; /* 移除padding，使用margin来控制居中 */
+  box-sizing: border-box;
+  margin-top: -50px; 
+ 
+ 
+}
+
+
+.create-account-container {
+  display: flex;
+  max-width: 1200px; /* 设置一个最大宽度以保持内容不会过于扩散 */
+  width: 100%; /* 确保容器宽度占满其父元素 */
+  padding: 40px; /* 根据登录页面的内边距进行设置 */
+  background: #FFFFFF;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 可选的阴影效果 */
+  margin-top: 0;
+  border: none;
+  box-shadow: none;
+  
+
+}
+
+.form-section {
+  width: 800px; /* 给定一个固定宽度 */
+  padding: 20px;
+  margin-right: 20px; /* 如果需要，保持一个间隔 */
+  background: #FFFFFF;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  margin-top: -20px;
+  
+}
+.form-section h2 {
+  font-size: 20px; /* 或者根据您的设计需要调整字体大小 */
+  text-align: center;
+  margin-bottom: 30px; 
+}
+.form-section p {
+  
+  text-align: center;
+  margin-bottom: 30px; 
+}
+
+.testimonial-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.testimonial-quote {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.testimonial-author {
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+
+
+
+.info-section {
+  flex-grow: 1; /* 允许这个元素增长填充剩余空间 */
+  padding: 20px;
+  background: #eaeaea;
+  margin-left: 100px; /* 如果您希望在`.info-section`和`.form-section`之间有一些间隔 */
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 垂直居中 */
+  align-items: center; /* 水平居中 */
+  padding-top: 50px; /* 添加一些上边距来下移内容 */
+  height: 100%; /* 确保这个容器的高度是填满父容器的 */
+  margin-top: 200px;
+}
+
+
+.social-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: left;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 16px;
+  color: #5f6368;
+  
+}
+
+.social-button img {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.buttom-section .calendar-access {
+  margin-top: 400px;
+  text-decoration: underline;
+}
+
+
+
+
+.social-button:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+input, .sign-in-button {
+  width: calc(100% - 20px); /* 减去padding的宽度 */
+  margin-bottom: 10px; /* 每个元素之间的空间 */
+  /* 可以根据需要添加更多样式，比如高度、边框等 */
+}
+
+/* 针对电子邮件输入框调整底部外边距 */
+.auth-form input[type="email"] {
+  margin-bottom: 20px; /* 或根据需要调整这个值来增加间距 */
+}
+
+/* 或者，如果您希望为表单中所有的输入框都增加间距，可以这样设置 */
+.auth-form input {
+  margin-bottom: 20px; /* 调整所有输入框的底部外边距 */
+}
+
+/* 另外，如果需要调整“Create Account”按钮与上一个元素（可能是输入框或其他元素）之间的距离 */
+.sign-in-button {
+  margin-top: 20px; /* 增加顶部外边距来拉开与上方元素的距离 */
+  margin-bottom: 16px;
+}
+
+
+
+
+
+/* 针对“Already have an Otter Account? Sign in”链接设置样式 */
+.create-account-link {
+  display: block; /* 使链接显示为块级元素，以便于控制间距 */
+  color: #0000EE; /* 链接的颜色，您可以根据设计调整 */
+  text-align: center; /* 如果需要文本居中 */
+  margin-bottom: 16px; /* 如果需要调整与下一个元素的间距 */
+  font-size: 14px; /* 根据设计调整字体大小 */
+  text-decoration: none; /* 去除下划线，如果设计中没有 */
+  font-size: 16px
+}
+
+
+
+/* 为底部的条款和隐私政策文本设置样式 */
+.terms-service {
+  text-align: center; /* 文本居中 */
+  font-size: 14px; /* 字体大小 */
+  color: #666; /* 字体颜色，可以根据设计需求进行调整 */
+  margin-top: 20px; /* 顶部间距，根据需要进行调整 */
+}
+
+/* 设置条款和隐私政策链接的样式 */
+.terms-service a {
+  color: #0000EE; /* 链接颜色 */
+  text-decoration: none; /* 如果设计要求无下划线 */
+}
+
+.terms-service a:hover {
+  text-decoration: underline; /* 鼠标悬浮时下划线，如果设计要求 */
+}
