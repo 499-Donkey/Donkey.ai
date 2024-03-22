@@ -23,6 +23,7 @@ const PreQuestions = [
   },
 ];
 
+
 const Upload: React.FC = () => {
   const chatHistoryRef = useRef<HTMLDivElement | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
