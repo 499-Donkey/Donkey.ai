@@ -1,187 +1,253 @@
+
+
 .upload-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  width: 80%;
+  margin: auto;
 }
 
-.FileInputForm{
-  margin-bottom: 20px;
+
+.button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #0056b3;
+  /* Same as the Upgrade button but with a border */
+  border-radius: 19px;
+  /* Rounded edges */
+  background-color: transparent;
+  /* No background */
+  color: #007bff;
+  /* Blue text color */
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  /* Remove underline from link */
+  display: inline-block;
+  /* To allow padding and other box model properties */
+  transition: all 0.3s;
+  /* Smooth transition for hover and background effect */
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
 }
 
 
-.fileContainer {
-  border: 2px dotted #000;
-  border-radius: 10px;
-  padding: 30%;
-  position: relative;
-}
-
-.fileInputsContainer {
-  margin-top: 20px;
+.upload-submit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-
+  justify-content: center;
+  width: 100%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin: 20px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.fileInput {
-  display: block;
-  margin: 5px 0;
+.dropzone {
+  border: 2.5px dashed #7b7a7a;
+  border-radius: 10px;
+  padding: 50px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
 }
 
-#addFileInput {
-  margin-top: 10px;
+.dropzone:hover {
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+.file-list {
+  list-style: none;
+  width: 80%;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.file-card {
+  border: 1px solid #afafaf;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* .file-card:hover {
+  background-color: #f4f4f4;
+} */
+
+.removeButton {
+  border: 1px solid #b0b0b0;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
 }
 
 .result-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 80%;
-  border: 2px solid #000;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.transcript {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  width: 90%;
-  margin: 10px;
-  overflow: auto;
-  border: 2px #000;
+.title-container {
+  display: flex;
+  justify-content: end; 
+  align-items: center; 
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
+.title-container button{
+  margin-left: 6px;
+}
+
+.title-container h2{
+  margin-right: auto; 
+}
+
+.transcript,
 .analysis {
-  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  width: 90%;
-  margin: 10px;
+  width: 100%;
+  margin: 2px;
   overflow: auto;
-  border: 2px #000;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.transcript h2,
+.analysis h2 {
+  font-size: 1.3rem; 
+  font-weight: 600;
+  color: #000000; 
+}
+
+.transcript pre,
+.analysis pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Arial', sans-serif; /* Adjust font family */
+  color: #000000; 
+  margin: 15px;
+}
+
+
 
 .chat-history {
-  height: 400px; 
-  overflow-y: auto;
-  border: 2px solid #000;
-  width: 80%;
+  height: 500px; 
+  overflow-y: scroll; 
+  border: 2px solid #8e8e8e;
+  width: 100%;
   margin-bottom: 20px;
+  margin-top: 40px;
   border-radius: 10px;
 }
+
 
 .chat-history-box {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  max-height: 100%;
 }
 
-.upload-container {
-  width: 80%;
-  margin: auto;
-}
-
-.result-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.result-box {
-  flex-basis: 48%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.chat-history {
-  margin-top: 20px;
-}
-
-.chat-history-item {
+.chat-history-donkey {
   margin-bottom: 10px;
-  background-color: #f0f0f0;
+  margin-right: 40px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #e1e7ee;
+}
+
+.chat-history-user {
+  margin-bottom: 10px;
+  margin-left: 40px;
+  border: 1px solid #ccc;
   padding: 10px;
   border-radius: 10px;
 }
 
-.chat-response {
-  margin-left: 20px;
-}
-
-.chatbox{
-  width: 80%;
-  margin-top: 20px;
+.chatbox {
+  width: 100%;
   margin-bottom: 40px;
 }
 
 .chatbox form {
   display: flex;
+  position: relative;
 }
 
 .chatbox input[type="text"] {
   flex: 1;
-  padding: 10px;
-  border-radius: 5px 0 0 5px;
+  padding: 20px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  outline: none;
-  border-radius: 20px;
+}
+
+.pre-questions-container{
+  padding: 6px;
+}
+
+.chat-history-pre-question {
+  margin-bottom: 10px;
+  padding: 30px;
+  border-radius: 10px;
+  border: 2px solid #0056b3;
+  background-color: transparent;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.chat-history-pre-question hover{
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
 }
 
 .chatbox button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
+  padding: 0.5rem 1rem;
+  border: 2px solid #0056b3;
+  border-radius: 19px;
+  background-color: transparent;
+  color: #007bff;
+  font-size: 1rem;
   cursor: pointer;
-  border-radius: 20px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin: 12px;
 }
 
 .chatbox button:hover {
-  background-color: #0056b3;
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
 }
-
-.button-container {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  width: 300px;
-}
-
-.button-container button {
-  flex: 1;
-  padding: 10px 20px;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button-container button.anotherButton {
-  margin-right: 10px;
-}
-
-.button-container button:hover {
-  background-color: #0056b3;
-}
-
-.removeButton {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.removeButton span {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-

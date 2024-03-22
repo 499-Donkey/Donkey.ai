@@ -93,7 +93,7 @@ export const chatWithUser = async (
       model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: "Please answer the question based on the transcripts, which is form video or audio:" },
+        { role: "user", content: "Please answer the question based on the data, which is from videos or audios:" },
         { role: "user", content: transcript },
         { role: "user", content: req.body.question },
       ],
@@ -153,6 +153,7 @@ async function getChatGPTAnalysis(transcript: string) {
       messages: [
         { role: "system", content: "You are a helpful assistant." },
         { role: "user", content: "Please summarize the following transcript:" },
+        { role: "user", content: "The answer should start form 'The data ...'" },
         { role: "user", content: transcript },
       ],
     };
