@@ -1,21 +1,53 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useDropzone } from 'react-dropzone';
 import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
-import Accordion from "react-bootstrap/esm/Accordion";
-import { FaTrashCan } from "react-icons/fa6";
-import { createRoot } from 'react-dom/client';
+import { FiTrash2, FiDownload } from 'react-icons/fi';
+
+const PreQuestions = [
+  {
+    id: 1,
+    question: "Could you provide a brief summary of the main points discussed?",
+  },
+  {
+    id: 2,
+    question: "What are the key takeaways or lessons learned from the audio/video?",
+  },
+  {
+    id: 3,
+    question: "Can you outline the major themes or topics covered in the audio/video?",
+  },
+  {
+    id: 4,
+    question: "What is the central message or argument presented in the audio/video?",
+  },
+];
+
 
 const Upload: React.FC = () => {
-  const fileInputsContainerRef = useRef<HTMLDivElement | null>(null);
   const chatHistoryRef = useRef<HTMLDivElement | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [userQuestion, setUserQuestion] = useState<string>("");
   const [chatHistory, setChatHistory] = useState<{ question: string, response: any }[]>([]);
+  const [filesList, setFilesList] = useState<File[]>([]);
+  const [showTranscript, setShowTranscript] = useState<boolean>(false);
+  const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
+  const [preQuestions, setPreQuestions] = useState(PreQuestions);
 
   useEffect(() => {
     setInitialization();
   }, []);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFilesList(prevFiles => [...prevFiles, ...acceptedFiles]);
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const removeFileFromList = (file: File) => {
+    setFilesList(filesList.filter(f => f !== file));
+  };
 
   const handleChatSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -23,7 +55,10 @@ const Upload: React.FC = () => {
       const response = await getChatResponse(userQuestion);
       setChatHistory([...chatHistory, { question: userQuestion, response }]);
       setUserQuestion("");
-      chatHistoryRef.current?.scrollTo(0, chatHistoryRef.current?.scrollHeight);
+      chatHistoryRef.current?.scrollTo({
+        top: chatHistoryRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     } catch (error) {
       console.error('Chat error:', error);
     }
@@ -31,16 +66,16 @@ const Upload: React.FC = () => {
 
   const UploadSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const fileInputs = fileInputsContainerRef.current?.querySelectorAll(".fileInput");
+
+    if (filesList.length === 0) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
     const formData = new FormData();
 
-    fileInputs?.forEach((fileInput) => {
-      if (fileInput instanceof HTMLInputElement) {
-        const files = fileInput.files;
-        if (files && files.length > 0) {
-          formData.append("file", files[0]);
-        }
-      }
+    filesList.forEach(file => {
+      formData.append("file", file);
     });
 
     try {
@@ -51,113 +86,99 @@ const Upload: React.FC = () => {
       const jsonResponse = await response.json();
       setTranscript(jsonResponse.transcript);
       setAnalysis(jsonResponse.analysis);
+
+      const resultContainer = document.querySelector('.result-container');
+      if (resultContainer) {
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+      }
     } catch (error: any) {
       console.error("Authentication error:", error);
     }
   };
 
-  const AddFileInputClick = () => {
-    const newContainer = document.createElement("div");
-    newContainer.classList.add("fileContainer");
-  
-    const newFileInput = document.createElement("input");
-    newFileInput.type = "file";
-    newFileInput.classList.add("fileInput");
-    newFileInput.accept = "video/*, audio/*";
-  
-    const removeButton = document.createElement("button");
-    removeButton.classList.add("removeButton");
-    removeButton.onclick = () => {
-      newContainer.remove();
-    };
-  
-    const trashIcon = <FaTrashCan />;
-    const root = createRoot(removeButton!);
-    root.render(trashIcon);
-
-    newContainer.appendChild(newFileInput);
-    newContainer.appendChild(removeButton);
-
-  
-    fileInputsContainerRef.current?.appendChild(newContainer);
-  };
-  
-  
   const setInitialization = () => {
-    setTranscript("nothing inside right now, please upload a video/audio file");
-    setAnalysis("nothing inside right now, please upload a video/audio file");
+    setTranscript("Nothing inside right now, please upload a video/audio file");
+    setAnalysis("Nothing inside right now, please upload a video/audio file");
+  };
+
+  const handleDownloadFile = (content: string | null, fileName: string) => {
+    if (content) {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+  const handlePreQuestionClick = (question: string) => {
+    setUserQuestion(question);
   };
   
-  
-
   return (
     <div className="upload-container">
-      <h1>Upload page</h1>
-      <h1>Convert Video/Audio to Text</h1>
-
-      <form className="FileInputForm"
-        id="uploadForm"
-        encType="multipart/form-data"
-        onSubmit={UploadSubmit}
-      >
-        <div
-          id="fileInputsContainer"
-          className="fileInputsContainer"
-          ref={fileInputsContainerRef}
-        >
-          <div className="fileContainer">
-            <input
-              type="file"
-              className="fileInput"
-              accept="video/*, audio/*"
-              required
-            />
-          </div>
+      <div className="upload-submit">
+        <div {...getRootProps({ className: 'dropzone' })}>
+          <input {...getInputProps()} />
+          <p>Drag and drop your files here, or click to browse and select files</p>
         </div>
-
-        <div className="button-container">
-          <button className="anotherButton" type="button" onClick={AddFileInputClick}>
-            Add Another
+        <ul className="file-list">
+          {filesList.map((file, index) => (
+            <li key={index} className="file-card">
+              <div className="file-info">
+                {file.name}
+              </div>
+              <button onClick={() => removeFileFromList(file)} className="removeButton">
+                <FiTrash2 />
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button className="button" type="button" onClick={UploadSubmit}>
+          Upload
         </button>
-          <button className="button" type="submit">
-            Upload
-        </button>
-        </div>
-      </form>
+      </div>
 
       <div className="result-container">
         <div className="transcript">
-          {transcript && (
+          <div className="title-container">
+            <h2>Transcript</h2>
+            <button className="button" onClick={() => setShowTranscript(!showTranscript)}>
+              {showTranscript ? "Hide" : "View"}
+            </button>
+            <button className="button" onClick={() => handleDownloadFile(transcript, 'transcript.txt')}>
+              Download
+              <FiDownload />
+            </button>
+          </div>
+          
+          {showTranscript && (
             <div>
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header><h2>Transcript</h2></Accordion.Header>
-                  <Accordion.Body>
-                    <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
-                      {transcript}
-                    </pre>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                {transcript}
+              </pre>
             </div>
           )}
         </div>
 
         <div className="analysis">
-          {analysis && (
+          <div className="title-container">
+            <h2>Analysis</h2>
+            <button className="button" onClick={() => setShowAnalysis(!showAnalysis)}>
+              {showAnalysis ? "Hide" : "View"}
+            </button>
+            <button className="button" onClick={() => handleDownloadFile(analysis, 'analysis.txt')}>
+              Download
+              <FiDownload />
+            </button>
+          </div>
+          
+          {showAnalysis && (
             <div>
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header><h2>Analysis</h2></Accordion.Header>
-
-                  <Accordion.Body>
-                    <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
-                      {analysis}
-                    </pre>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-
+              <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                {analysis}
+              </pre>
             </div>
           )}
         </div>
@@ -165,12 +186,33 @@ const Upload: React.FC = () => {
 
       <div className="chat-history" ref={chatHistoryRef}>
         <div className="chat-history-box">
-          {chatHistory.map((item, index) => (
-            <div key={index}>
-              <div className="chat-history-item"> <h5>You: </h5>{item.question}</div>
-              <div className="chat-history-item"> <h5>Donkey: </h5>{item.response.answer}</div>
+          {chatHistory.length === 0 ? (
+            <div className="pre-questions-container">
+              <h4 className="pre-questions-title">What To Ask</h4>
+              {preQuestions.map((preQuestion) => (
+                <div
+                  key={preQuestion.id}
+                  className="chat-history-pre-question"
+                  onClick={() => handlePreQuestionClick(preQuestion.question)}
+                >
+                  {preQuestion.question}
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            chatHistory.map((item, index) => (
+              <div key={index}>
+                <div className="chat-history-user">
+                  <h6>You </h6>
+                  {item.question}
+                </div>
+                <div className="chat-history-donkey">
+                  <h6>Donkey </h6>
+                  {item.response.answer}
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -183,14 +225,13 @@ const Upload: React.FC = () => {
             onChange={(e) => setUserQuestion(e.target.value)}
             placeholder="Enter your question"
             required
-            style={{ paddingRight: '60px' }}
+            style={{ paddingRight: '150px' }}
           />
           <button type="submit" style={{ position: 'absolute', top: 0, right: 0 }}>Submit</button>
-
         </form>
       </div>
-
     </div>
   );
 };
+
 export default Upload;
