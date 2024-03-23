@@ -132,4 +132,4 @@ dist
 .pnp.*
 
 # result file
-src/result/
+result/
