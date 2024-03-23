@@ -47,7 +47,7 @@ export const uploadFile = async (
 
       } else {
         console.log("The tokens is smaller than 4096, processing large transcript");
-      analysis = await getChatGPTAnalysis(transcript);
+      analysis = await getChatGPTAnalysis(transcript, false);
       }
   
     res.status(200).json({ transcript, transcriptFilePath, analysis });
@@ -65,7 +65,7 @@ async function processLargeTranscript(transcript: string): Promise<string> {
     const transcriptFilePath = path.join(__dirname, `../result/transcript_${i + 1}.txt`);
     i++;
     fs.writeFileSync(transcriptFilePath, chunk);
-    const chunkAnalysis = await getChatGPTAnalysis(chunk);
+    const chunkAnalysis = await getChatGPTAnalysis(chunk, true);
     analysis += chunkAnalysis + '\n';
     removeFile(transcriptFilePath);
   }
@@ -195,17 +195,32 @@ async function getTranscript(audioFilePath: string) {
   }
 }
 
-function getChatGPTAnalysis(transcript: string) {
-  const data = {
-    model: "gpt-3.5-turbo",
-    messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "Please summarize the following transcript:" },
-      { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content." },
-      { role: "user", content: "The answer should start form 'The data ...'" },
-      { role: "user", content: transcript },
-    ],
-  };
+
+
+function getChatGPTAnalysis(transcript: string, LongTranscriptOrNot: boolean) {
+  let data;
+  if(LongTranscriptOrNot == true){
+    data = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
+        { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content/message." },
+        { role: "user", content: "start from 'video i'(i is natural numbers), Please continue summarize transcript from last content with following transcript if it exist:" },
+        { role: "user", content: transcript },
+      ],
+    };
+  }else{
+    data = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are a helpful assistant." },
+        { role: "user", content: "Please summarize the following transcript:" },
+        { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content/message." },
+        { role: "user", content: "The answer should start form 'The data ...'" },
+        { role: "user", content: transcript },
+      ],
+    };
+  }
 
   return axios.post(
     "https://api.openai.com/v1/chat/completions",
