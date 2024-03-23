@@ -136,3 +136,4 @@ result/*
 
 # Except the folder itself
 !result/
+!result/.result_txt-file_and_video-file_here.txt
