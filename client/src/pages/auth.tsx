@@ -1,6 +1,7 @@
 
 // Auth.tsx
 import React, { useState } from 'react';
+import { login } from '../network/users_api'; 
 import '../styles/Auth.css';
 import googleLogo from '../assets/google-logo.svg';
 import microsoftLogo from '../assets/microsoft-logo.svg';
@@ -12,11 +13,24 @@ import { Link } from 'react-router-dom';
 const Auth = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginSuccess, setLoginSuccess] = useState(''); // 添加状态管理登录成功消息
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log('Email:', email, 'Password:', password);
+        try {
+            // 这里假设后端需要的是 'username' 字段
+            const user = await login({ username: email, password });
+
+
+            setLoginSuccess('登录成功！欢迎回来.'); // 更新登录成功消息
+            console.log('登录成功，用户信息:', user);
+            // 登录成功后的逻辑，比如跳转到主页或保存用户状态
+        } catch (error) {
+            console.error('登录失败:', error);
+            // 登录失败时的处理逻辑，比如显示错误提示
+        }
     };
+    
 
     return (
         
@@ -37,6 +51,7 @@ const Auth = () => {
                     <span className="button-text">Continue with Apple</span>
                 </button>
             </div>
+            {loginSuccess && <div className="login-success-message">{loginSuccess}</div>}
             <div className="auth-links">
                 <Link to="/forgot-password" className="forgot-password">Forgot your password?</Link>
                 <Link to="/create-account" className="create-account">Create Account</Link>
