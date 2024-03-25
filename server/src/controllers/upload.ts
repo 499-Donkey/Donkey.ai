@@ -195,30 +195,34 @@ async function getTranscript(audioFilePath: string) {
 
 
 function getChatGPTAnalysis(transcript: string) {
-  const data = {
-    model: "gpt-3.5-turbo",
-    messages: [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "Please summarize the following transcript:" },
-      { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content." },
-      { role: "user", content: "The answer should start form 'The data ...'" },
-      { role: "user", content: transcript },
-    ],
-  };
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = {
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: "Please summarize the following transcript:" },
+          { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content." },
+          { role: "user", content: "The answer should start form 'The data ...'" },
+          { role: "user", content: transcript },
+        ],
+      };
 
-  return axios.post(
-    "https://api.openai.com/v1/chat/completions",
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-  .then(response => response.data.choices[0].message.content)
-  .catch(error => {
-    console.error("Error in getChatGPTAnalysis:", error);
-    throw new Error("Error in getChatGPTAnalysis");
+      axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(response => resolve(response.data.choices[0].message.content))
+      .catch(error => {
+        console.error("Error in getChatGPTAnalysis:", error);
+        reject(new Error("Error in getChatGPTAnalysis"));
+      });
+    }, 1000);
   });
 }
