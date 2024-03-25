@@ -49,8 +49,6 @@ To get started with Donkey.AI, follow these steps:
 6. Windows: `npm run start-win`, MacOS: `npm run start-mac`
 7. Access the application at [http://localhost:3000](http://localhost:3000)
 
-For detailed instructions on deploying and using Donkey.AI, refer to the [documentation](docs/README.md).
-
 ## Technology Stack
 
 Donkey.AI is built using the following technologies:
