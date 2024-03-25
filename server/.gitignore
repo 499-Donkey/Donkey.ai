@@ -130,3 +130,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore all files inside the folder
+src/result/*
+
+# Except the folder itself
+!src/result/
+!src/result/.result_txt-file_and_video-file_here.txt
