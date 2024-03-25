@@ -6,6 +6,7 @@ Donkey.AI is an innovative platform designed to streamline video content process
 
 - [Overview](#overview)
 - [Features](#features)
+- [Requirements](#requirements)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
 - [Team](#team)
