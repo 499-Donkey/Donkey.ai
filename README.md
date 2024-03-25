@@ -23,6 +23,19 @@ Donkey.AI is a powerful tool for automated video content analysis. It simplifies
 - **Customizable Summaries:** Generate interactive summaries tailored to user preferences.
 - **Interactive Queries:** Enable users to search for specific information within videos using natural language queries.
 
+## Requirements
+
+To run this project, you need to create a `.env` file in the server directory with the following environment variables:
+
+- `MONGO_CONNECTION_STRING`: Your MongoDB connection string.
+- `PORT`: The port number for the server to listen on.
+- `OPEN_AI_KEY`: Your OpenAI API key.
+- `SESSION_SECRET`: A secret key for session management.
+
+Example `.env` file:
+
+
+
 ## Getting Started
 
 To get started with Donkey.AI, follow these steps:
