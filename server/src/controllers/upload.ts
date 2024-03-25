@@ -5,7 +5,6 @@ import FormData from "form-data";
 import { NextFunction, Request, Response } from "express";
 import { spawn } from "child_process";
 import ffmpegPath from "ffmpeg-static";
-import Bottleneck from "bottleneck";
 
 const MAX_TOKENS = 4096;
 
@@ -195,34 +194,31 @@ async function getTranscript(audioFilePath: string) {
 }
 
 
-
-const limiter = new Bottleneck({
-  maxConcurrent: 1,
-  minTime: 1000,
-});
-
 function getChatGPTAnalysis(transcript: string) {
   const data = {
     model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content/message." },
-      { role: "user", content: "start from 'video i'(i is natural numbers), Please continue summarize transcript from last content with following transcript if it exist:" },
+      { role: "user", content: "Please summarize the following transcript:" },
+      { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content." },
+      { role: "user", content: "The answer should start form 'The data ...'" },
       { role: "user", content: transcript },
     ],
   };
 
-  return limiter.schedule(() =>
-    axios.post("https://api.openai.com/v1/chat/completions", data, {
+  return axios.post(
+    "https://api.openai.com/v1/chat/completions",
+    data,
+    {
       headers: {
         Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-    })
+    }
   )
-    .then((response) => response.data.choices[0].message.content)
-    .catch((error) => {
-      console.error("Error in getChatGPTAnalysis:", error);
-      throw new Error("Error in getChatGPTAnalysis");
-    });
+  .then(response => response.data.choices[0].message.content)
+  .catch(error => {
+    console.error("Error in getChatGPTAnalysis:", error);
+    throw new Error("Error in getChatGPTAnalysis");
+  });
 }
