@@ -166,8 +166,6 @@ export const chatWithUser = async (
   catch(error){
     next(error);
   }
-
-
 }
 
 async function getTranscript(audioFilePath: string) {

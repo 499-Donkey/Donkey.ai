@@ -132,8 +132,8 @@ dist
 .pnp.*
 
 # Ignore all files inside the folder
-result/*
+src/result/*
 
 # Except the folder itself
-!result/
-!result/.result_txt-file_and_video-file_here.txt
+!src/result/
+!src/result/.result_txt-file_and_video-file_here.txt
