@@ -175,3 +175,9 @@ input, .sign-in-button {
 .terms-service a:hover {
   text-decoration: underline; /* 鼠标悬浮时下划线，如果设计要求 */
 }
+
+.error-message {
+  color: red; /* 或者你希望的任何颜色 */
+  font-weight: bold;
+  /* 其他样式如间距、字体大小等 */
+}
