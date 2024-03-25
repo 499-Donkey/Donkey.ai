@@ -42,7 +42,7 @@ To get started with Donkey.AI, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/donkey-ai.git`
 2. Navigate to the Project Directory: `cd donkey-ai`
-3. Install dependencies (necessary for Windows): `npm install`
+3. Install dependencies (necessary for Windows): `npm install -D concurrently`
 4. In the server directory, add a .env file and configure it to connect to MongoDB. If using VSCode, you can use the MongoDB extension to facilitate the database connection.
 5. Build the Project: `npm run build`
 6. Windows: `npm run start-win`, MacOS: `npm run start-mac`
