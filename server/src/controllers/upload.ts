@@ -131,43 +131,95 @@ async function convertToOpus(inputFilePath: string): Promise<string> {
   });
 }
 
-export const chatWithUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction) => {
-  console.log("trying to chat")
-  try{
+// export const chatWithUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction) => {
+//   console.log("trying to chat")
+//   try{
+//     const analysisFilePath = path.join(__dirname, "../result/chatAnalysis.txt");
+//     const analysis = fs.readFileSync(analysisFilePath, "utf8");
+
+//     const data = {
+//       model: "gpt-3.5-turbo",
+//       messages: [
+//         { role: "system", content: "You are a helpful assistant." },
+//         { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
+//         { role: "user", content: analysis },
+//         { role: "user", content: req.body.question },
+//       ],
+//     };
+
+//     const response = await axios.post(
+//       "https://api.openai.com/v1/chat/completions",
+//       data,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+//           'Content-Type': 'application/json',
+//         },
+//       }
+//     );
+
+//     const answer = response.data.choices[0].message.content;
+//     res.status(200).json({ answer })
+//   }
+//   catch(error){
+//     next(error);
+//   }
+// }
+
+export const chatWithUser = async (req: Request, res: Response, next: NextFunction) =>  {
+  try {
+    console.log("trying to chat");
     const analysisFilePath = path.join(__dirname, "../result/chatAnalysis.txt");
-    const analysis = fs.readFileSync(analysisFilePath, "utf8");
+    let analysis = fs.readFileSync(analysisFilePath, "utf8");
 
-    const data = {
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
-        { role: "user", content: analysis },
-        { role: "user", content: req.body.question },
-      ],
-    };
+    const analysisTokens = openaiTokenCounter.text(analysis, "gpt-3.5-turbo");
+    if (analysisTokens > MAX_TOKENS) {
+      console.log("Analysis exceeds token limit, chunking for processing");
+      const chunks = chunkTranscript(analysis, tokenPartSize); 
+      analysis = ""; 
 
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
-          'Content-Type': 'application/json',
-        },
+      for (const chunk of chunks) {
+        const chunkResponse = await askQuestion(chunk, req.body.question);
+        analysis += chunkResponse + "\n";  
       }
-    );
+    } else {
+      analysis = await askQuestion(analysis, req.body.question);
+    }
 
-    const answer = response.data.choices[0].message.content;
-    res.status(200).json({ answer })
-  }
-  catch(error){
+    res.status(200).json({ answer: analysis });
+  } catch (error) {
     next(error);
   }
 }
+
+async function askQuestion(analysis: string, question: string): Promise<string> {
+  const data = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
+      { role: "user", content: analysis },
+      { role: "user", content: question },
+    ],
+  };
+
+  const response = await axios.post(
+    "https://api.openai.com/v1/chat/completions",
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  return response.data.choices[0].message.content;
+}
+
 
 async function getTranscript(audioFilePath: string) {
   try {
