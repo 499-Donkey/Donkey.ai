@@ -41,39 +41,45 @@ export const uploadFile = async (
     const transcriptTokens:number = openaiTokenCounter.text(transcript, model);
     console.log("length of transcriptTokens: ", transcriptTokens);
 
-    let analysis;
+    let analysis: string = "";
+    let sumAnalysis: string = "";
+    let contentToWrite: string = "";
     
     if (transcriptTokens > MAX_TOKENS) {
-      console.log("The tokens is bigger than 4096, processing large transcript");
-      analysis = await processLargeTranscript(transcript);
-      } else {
-        console.log("The tokens is smaller than 4096, processing large transcript");
-      analysis = await getChatGPTAnalysis(transcript,false);
-      }
+      console.log("The tokens are bigger than 4096, processing large transcript");
+      ({ analysis, sumAnalysis } = await processLargeTranscript(transcript));
+      contentToWrite = sumAnalysis;
+    } else {
+      console.log("The tokens are smaller than 4096, processing transcript");
+      analysis = await getChatGPTAnalysis(transcript, false);
+      contentToWrite = analysis;
+    }
+
+    fs.writeFileSync(path.join(__dirname, "../result/chatAnalysis.txt"), contentToWrite);
   
-    res.status(200).json({ transcript, transcriptFilePath, analysis });
+    res.status(200).json({ transcript, transcriptFilePath, analysis, sumAnalysis});
   } catch (error) {
     next(error);
   }
 };
 
 const tokenPartSize = 500 * 4;
-async function processLargeTranscript(transcript: string): Promise<string> {
+async function processLargeTranscript(transcript: string):  Promise<{ analysis: string, sumAnalysis: string }> {
   const transcriptChunks = chunkTranscript(transcript, tokenPartSize);
   let analysis = '';
   let i = 0;
-  let temp = '';
+  let sumAnalysis = '';
   for (const chunk of transcriptChunks) {
     const transcriptFilePath = path.join(__dirname, `../result/transcript_${i + 1}.txt`);
     i++;
     fs.writeFileSync(transcriptFilePath, chunk);
     const chunkAnalysis = await getChatGPTAnalysis(chunk, false);
-    temp += chunkAnalysis + '\n';
+    sumAnalysis += chunkAnalysis + '\n';
     removeFile(transcriptFilePath);
   }
-  const analysisCombine = await getChatGPTAnalysis(temp, true);
+  const analysisCombine = await getChatGPTAnalysis(sumAnalysis, true);
   analysis += analysisCombine + '\n';
-  return analysis;
+  return {analysis, sumAnalysis};
 }
 
 function chunkTranscript(transcript: string, chunkSize: number): string[] {
@@ -125,43 +131,95 @@ async function convertToOpus(inputFilePath: string): Promise<string> {
   });
 }
 
-export const chatWithUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction) => {
-  console.log("trying to chat")
-  try{
-    const transcriptFilePath = path.join(__dirname, "../result/transcript.txt");
-    const transcript = fs.readFileSync(transcriptFilePath, "utf8");
+// export const chatWithUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction) => {
+//   console.log("trying to chat")
+//   try{
+//     const analysisFilePath = path.join(__dirname, "../result/chatAnalysis.txt");
+//     const analysis = fs.readFileSync(analysisFilePath, "utf8");
 
-    const data = {
-      model: "gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: "user", content: "Please answer the question based on the data, which is from videos or audios:" },
-        { role: "user", content: transcript },
-        { role: "user", content: req.body.question },
-      ],
-    };
+//     const data = {
+//       model: "gpt-3.5-turbo",
+//       messages: [
+//         { role: "system", content: "You are a helpful assistant." },
+//         { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
+//         { role: "user", content: analysis },
+//         { role: "user", content: req.body.question },
+//       ],
+//     };
 
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
-          'Content-Type': 'application/json',
-        },
+//     const response = await axios.post(
+//       "https://api.openai.com/v1/chat/completions",
+//       data,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+//           'Content-Type': 'application/json',
+//         },
+//       }
+//     );
+
+//     const answer = response.data.choices[0].message.content;
+//     res.status(200).json({ answer })
+//   }
+//   catch(error){
+//     next(error);
+//   }
+// }
+
+export const chatWithUser = async (req: Request, res: Response, next: NextFunction) =>  {
+  try {
+    console.log("trying to chat");
+    const analysisFilePath = path.join(__dirname, "../result/chatAnalysis.txt");
+    let analysis = fs.readFileSync(analysisFilePath, "utf8");
+
+    const analysisTokens = openaiTokenCounter.text(analysis, "gpt-3.5-turbo");
+    if (analysisTokens > MAX_TOKENS) {
+      console.log("Analysis exceeds token limit, chunking for processing");
+      const chunks = chunkTranscript(analysis, tokenPartSize); 
+      analysis = ""; 
+
+      for (const chunk of chunks) {
+        const chunkResponse = await askQuestion(chunk, req.body.question);
+        analysis += chunkResponse + "\n";  
       }
-    );
+    } else {
+      analysis = await askQuestion(analysis, req.body.question);
+    }
 
-    const answer = response.data.choices[0].message.content;
-    res.status(200).json({ answer })
-  }
-  catch(error){
+    res.status(200).json({ answer: analysis });
+  } catch (error) {
     next(error);
   }
 }
+
+async function askQuestion(analysis: string, question: string): Promise<string> {
+  const data = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
+      { role: "user", content: analysis },
+      { role: "user", content: question },
+    ],
+  };
+
+  const response = await axios.post(
+    "https://api.openai.com/v1/chat/completions",
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  return response.data.choices[0].message.content;
+}
+
 
 async function getTranscript(audioFilePath: string) {
   try {
@@ -189,7 +247,7 @@ async function getTranscript(audioFilePath: string) {
 }
 
 
-function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean) {
+function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Promise<string> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       let data;
