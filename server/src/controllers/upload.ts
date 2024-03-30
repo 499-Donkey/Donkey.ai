@@ -5,6 +5,7 @@ import FormData from "form-data";
 import { NextFunction, Request, Response } from "express";
 import { spawn } from "child_process";
 import ffmpegPath from "ffmpeg-static";
+import openaiTokenCounter from 'openai-gpt-token-counter';
 
 const MAX_TOKENS = 4096;
 
@@ -36,7 +37,8 @@ export const uploadFile = async (
     const transcriptFilePath = path.join(__dirname, "../result/transcript.txt");
     fs.writeFileSync(transcriptFilePath, transcript);
 
-    const transcriptTokens:number = countTokensInFile(transcript);
+    const model = "gpt-3.5-turbo";
+    const transcriptTokens:number = openaiTokenCounter.text(transcript, model);
     console.log("length of transcriptTokens: ", transcriptTokens);
 
     let analysis;
@@ -44,10 +46,9 @@ export const uploadFile = async (
     if (transcriptTokens > MAX_TOKENS) {
       console.log("The tokens is bigger than 4096, processing large transcript");
       analysis = await processLargeTranscript(transcript);
-
       } else {
         console.log("The tokens is smaller than 4096, processing large transcript");
-      analysis = await getChatGPTAnalysis(transcript);
+      analysis = await getChatGPTAnalysis(transcript,false);
       }
   
     res.status(200).json({ transcript, transcriptFilePath, analysis });
@@ -56,30 +57,30 @@ export const uploadFile = async (
   }
 };
 
-const tokenPartSize = 4000;
+const tokenPartSize = 500 * 4;
 async function processLargeTranscript(transcript: string): Promise<string> {
   const transcriptChunks = chunkTranscript(transcript, tokenPartSize);
   let analysis = '';
   let i = 0;
+  let temp = '';
   for (const chunk of transcriptChunks) {
     const transcriptFilePath = path.join(__dirname, `../result/transcript_${i + 1}.txt`);
     i++;
     fs.writeFileSync(transcriptFilePath, chunk);
-    const chunkAnalysis = await getChatGPTAnalysis(chunk);
-    analysis += chunkAnalysis + '\n';
+    const chunkAnalysis = await getChatGPTAnalysis(chunk, false);
+    temp += chunkAnalysis + '\n';
     removeFile(transcriptFilePath);
   }
+  const analysisCombine = await getChatGPTAnalysis(temp, true);
+  analysis += analysisCombine + '\n';
   return analysis;
 }
 
 function chunkTranscript(transcript: string, chunkSize: number): string[] {
   const chunks: string[] = [];
-  let startIndex = 0;
-  while (startIndex < transcript.length) {
-      const chunk = transcript.substring(startIndex, chunkSize);
-      chunks.push(chunk);
-      startIndex += chunkSize;
-  }
+  for (let i = 0; i < transcript.length; i += chunkSize) {
+		chunks.push(transcript.slice(i, i + chunkSize));
+	}
   return chunks;
 }
 
@@ -122,12 +123,6 @@ async function convertToOpus(inputFilePath: string): Promise<string> {
       }
     });
   });
-}
-
-function countTokensInFile(transcript: string): number {
-  const tokens = transcript.split(/\s+|\b/);
-  const filteredTokens = tokens.filter(token => token.trim() !== '');
-  return filteredTokens.length;
 }
 
 export const chatWithUser = async (
@@ -194,20 +189,29 @@ async function getTranscript(audioFilePath: string) {
 }
 
 
-function getChatGPTAnalysis(transcript: string) {
+function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const data = {
+      let data;
+      if(isLargeTranscript === false){
+      data = {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful assistant." },
           { role: "user", content: "Please summarize the following transcript:" },
-          { role: "user", content: "if video is more than 1, then summarize transcript separately; if not, then ignore this content." },
-          { role: "user", content: "The answer should start form 'The data ...'" },
           { role: "user", content: transcript },
         ],
       };
-
+      }else{
+        data = {
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "You are a helpful assistant." },
+            { role: "user", content: "Please summarize transcript below:" },
+            { role: "user", content: transcript },
+          ],
+        };
+      }
       axios.post(
         "https://api.openai.com/v1/chat/completions",
         data,
@@ -223,6 +227,6 @@ function getChatGPTAnalysis(transcript: string) {
         console.error("Error in getChatGPTAnalysis:", error);
         reject(new Error("Error in getChatGPTAnalysis"));
       });
-    }, 1000);
+    }, 3000);
   });
 }
