@@ -207,3 +207,19 @@
   background-color: #F8F9FA; /* 导航条的背景色 */
   /* 更多样式 */
 }
+
+.logout-button {
+  background-color: #f44336; /* 红色背景 */
+  color: white; /* 白色文本 */
+  border: none; /* 无边框 */
+  padding: 10px 20px; /* 内填充 */
+  margin-top: 10px; /* 上边距 */
+  cursor: pointer; /* 鼠标指针为手形 */
+  border-radius: 4px; /* 圆角边框 */
+  outline: none; /* 点击时无轮廓 */
+}
+
+.logout-button:hover {
+  background-color: #d32f2f; /* 鼠标悬停时的背景色变深 */
+}
+
