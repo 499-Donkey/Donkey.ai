@@ -10,5 +10,10 @@
     },
     "devDependencies": {
         "concurrently": "^8.2.2"
+    },
+    "dependencies": {
+        "@azure/msal-node": "^2.6.6",
+        "googleapis": "^134.0.0",
+        "react-bootstrap": "^2.10.1"
     }
 }
