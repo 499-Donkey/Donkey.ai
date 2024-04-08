@@ -6,6 +6,13 @@ import { NextFunction, Request, Response } from "express";
 import { spawn } from "child_process";
 import ffmpegPath from "ffmpeg-static";
 import openaiTokenCounter from 'openai-gpt-token-counter';
+import { initPinecone } from '../util/pinecone_connect';
+import { PineconeStore  } from '@langchain/pinecone';
+import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '../models/pinecone';
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+import { Document } from "langchain/document";
+import { makeChain } from '../util/chain';
 
 const MAX_TOKENS = 4096;
 
@@ -14,7 +21,6 @@ export const uploadFile = async (
   res: Response,
   next: NextFunction
 ) => {
-  
   const files = req.files as Express.Multer.File[];
   if (!files || files.length === 0) {
     return res.status(400).json({ error: "No files uploaded." });
@@ -287,4 +293,73 @@ function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Pro
       });
     }, 3000);
   });
+}
+
+export const extractvideo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("trying to Extract video");
+  const filePath = path.join(__dirname, "../result/transcript.txt");
+  
+  const transcript = fs.readFileSync(filePath, "utf8");
+
+  try {
+
+    console.log("User enter: " + req.body.userEnter);
+
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 1000,
+      chunkOverlap: 200,
+    });
+
+    const docs = await textSplitter.splitDocuments([new Document({ pageContent: transcript }),]);
+
+    //console.log('split docs', docs);
+
+    const embeddings = new OpenAIEmbeddings({
+      openAIApiKey: process.env.OPEN_AI_KEY ?? '',
+      modelName: "text-embedding-ada-002",
+    }
+    );
+    const pinecone = await initPinecone();
+    
+    const index = pinecone.Index(PINECONE_INDEX_NAME);
+    console.log('success create vector store');
+
+    await PineconeStore.fromDocuments(docs, embeddings, {
+      pineconeIndex: index,
+      namespace: PINECONE_NAME_SPACE,
+      textKey: 'text',
+    });
+
+    const sanitizedQuestion = req.body.userEnter.trim().replaceAll('\n', ' ');
+
+    const vectorStore = await PineconeStore.fromExistingIndex(
+      new OpenAIEmbeddings({openAIApiKey: process.env.OPEN_AI_KEY}),
+      {
+        pineconeIndex: index,
+        textKey: 'text',
+        namespace: PINECONE_NAME_SPACE,
+      },
+    );
+
+    console.log("VectorStore:" + vectorStore);
+
+    const chain = makeChain(vectorStore);
+
+    const response = await chain.invoke({
+      question: sanitizedQuestion,
+      chat_history: req.body.history || [],
+    });
+
+    console.log('success create response');
+    console.log('response', response);
+    res.status(200).json(response);
+
+    //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+  } catch (error) {
+    next(error);
+  }
 }

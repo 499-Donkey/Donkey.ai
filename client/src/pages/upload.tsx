@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
 import { FiTrash2, FiDownload } from 'react-icons/fi';
+import { Message } from '../models/message';
 
 const PreQuestions = [
   {
@@ -34,6 +35,21 @@ const Upload: React.FC = () => {
   const [showTranscript, setShowTranscript] = useState<boolean>(false);
   const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
   const [preQuestions, setPreQuestions] = useState(PreQuestions);
+  const [userEnter,setUserEnter] = useState<string>("");
+  const [userEnterState,setUserEnterState] = useState<{
+    messages: Message[];
+    history: [string, string][];
+  }>({
+    messages: [
+      {
+        message: 'Hi, how can I help you today?',
+        type: 'apiMessage',
+      },
+    ],
+    history: [],
+  });
+  const { messages, history } = userEnterState;
+
 
   useEffect(() => {
     setInitialization();
@@ -114,6 +130,53 @@ const Upload: React.FC = () => {
   };
   const handlePreQuestionClick = (question: string) => {
     setUserQuestion(question);
+  };
+
+  const handleExtractSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const question = userEnter.trim();
+
+    setUserEnterState((state) => ({
+      ...state,
+      messages: [
+        ...state.messages,
+        {
+          type: 'userMessage',
+          message: question,
+        },
+      ],
+    }));
+
+    try {
+      const response = await fetch(
+        "/api/upload/extract",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEnter, history }),
+        }
+      );
+      const data = await response.json();
+      
+      setUserEnterState((state) => ({
+        ...state,
+        messages: [
+          ...state.messages,
+          {
+            type: 'apiMessage',
+            message: data.text,
+            sourceDocs: data.sourceDocuments,
+          },
+        ],
+        history: [...state.history, [question, data.text]],
+      }));
+
+    } catch (error) {
+      console.error('Extract error:', error);
+    }
   };
   
   return (
@@ -230,6 +293,20 @@ const Upload: React.FC = () => {
           <button type="submit" style={{ position: 'absolute', top: 0, right: 0 }}>Submit</button>
         </form>
       </div>
+
+        <div className="chatbox">
+          <form onSubmit={handleExtractSubmit} style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={userEnter}
+              onChange={(e) => setUserEnter(e.target.value)}
+              placeholder="Enter Something"
+              required
+              style={{ paddingRight: '150px' }}
+            />
+            <button type="submit" style={{ position: 'absolute', top: 0, right: 0 }}>Submit</button>
+          </form>
+        </div>
     </div>
   );
 };
