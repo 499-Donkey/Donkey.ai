@@ -1,11 +1,9 @@
-// app.ts
-
 import "dotenv/config";
-import express, { NextFunction, Request, Response } from "express";
+import express, {  NextFunction, Request, Response } from "express";
 import scriptRoutes from "./routes/scripts";
 import userRoutes from "./routes/users";
 import uploadRoutes from "./routes/upload";
-import authRoutes from "./routes/auth"; // 引入auth路由
+import authRoutes from "./routes/auth";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
@@ -23,7 +21,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60 * 60 * 1000, // 1小时
+        maxAge: 60 * 60 * 1000, 
     },
     rolling: true,
     store: MongoStore.create({
@@ -31,15 +29,14 @@ app.use(session({
     }),
 }));
 
-// 使用新的auth路由
-app.use("/api/auth", authRoutes);
 
-// 现有的路由
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/scripts", scriptRoutes);
 app.use("/api/upload", uploadRoutes);
 
-// 错误处理中间件
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     console.error(error);
     let errorMessage = "An unknown error occurred";
@@ -51,7 +48,7 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     res.status(statusCode).json({ error: errorMessage });
 });
 
-// 404中间件
+
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));
 });
