@@ -13,6 +13,6 @@ router.post('/', upload.array('file'), UploadController.uploadFile);
 
 router.post('/chat',  UploadController.chatWithUser);
 
-router.post('/extract', UploadController.extractvideo);
+router.post('/extract', UploadController.extractVideo);
 
 export default router;

@@ -13,9 +13,9 @@ export async function initPinecone() {
       metric:"cosine",
       spec: {
         pod: {
-          environment: 'gcp-starter',
+          environment: 'us-east1-gcp',
           pods: 1,
-          podType: 'p1.x1'
+          podType: 's1.x1'
         }
       },
       suppressConflicts: true,

@@ -14,6 +14,7 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { Document } from "langchain/document";
 import { makeChain } from '../util/chain';
 
+
 const MAX_TOKENS = 4096;
 
 export const uploadFile = async (
@@ -295,7 +296,7 @@ function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Pro
   });
 }
 
-export const extractvideo = async (
+export const extractVideo = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -358,7 +359,7 @@ export const extractvideo = async (
     console.log('response', response);
     res.status(200).json(response);
 
-    //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+    await pinecone.deleteIndex(PINECONE_INDEX_NAME);
   } catch (error) {
     next(error);
   }

@@ -26,6 +26,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@langchain/community": "^0.0.46",
     "@langchain/openai": "^0.0.26",
     "@langchain/pinecone": "^0.0.4",
     "@pinecone-database/pinecone": "^2.2.0",
