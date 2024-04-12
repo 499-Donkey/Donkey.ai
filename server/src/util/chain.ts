@@ -78,16 +78,16 @@ export const makeChain = (vectorstore: PineconeStore) => {
     temperature: 0,
   });
 
-    const chain = ConversationalRetrievalQAChain.fromLLM(
+  const chain = ConversationalRetrievalQAChain.fromLLM(
     model,
     vectorstore.asRetriever(),
     {
-    qaTemplate: QA_PROMPT,
-    questionGeneratorTemplate: CONDENSE_PROMPT,
-    returnSourceDocuments: false,
-    questionGeneratorChainOptions: {
-      llm: nonStreamingModel,
-    },
+      qaTemplate: QA_PROMPT,
+      questionGeneratorTemplate: CONDENSE_PROMPT,
+      returnSourceDocuments: false,
+      questionGeneratorChainOptions: {
+        llm: nonStreamingModel,
+      },
     },
   );
 

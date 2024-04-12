@@ -317,7 +317,7 @@ export const extractVideo = async (
 
     const docs = await textSplitter.splitDocuments([new Document({ pageContent: transcript }),]);
 
-    //console.log('split docs', docs);
+    // console.log('split docs', docs);
 
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPEN_AI_KEY ?? '',
