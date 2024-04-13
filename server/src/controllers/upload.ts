@@ -357,10 +357,71 @@ export const extractVideo = async (
 
     console.log('success create response');
     console.log('response', response);
-    res.status(200).json(response);
 
-    await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+    const output = response.text;
+    console.log('type of output: ' + typeof output);
+
+    const [start, end] = extractTimes(output);
+
+    console.log("starting time: " + start);
+    console.log("ending time: " + end);
+
+    const inputFilePath = path.join(__dirname, `../result/temp_audio_1.mp4`);
+    
+    const outputFilePath = path.join(__dirname, `../result/clip.mp4`);
+
+    const finalpath = await extractClip(inputFilePath, start, end, outputFilePath);
+    
+    console.log("finalpath: " + finalpath);
+
+    res.status(200).json(response);
+    //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
   } catch (error) {
     next(error);
   }
+}
+
+function timeToSeconds(time: string): number {
+  const [hoursStr, minutesStr, secondsStr] = time.split(':');
+  const secondsParts = secondsStr.split('.');
+  const hours = parseInt(hoursStr);
+  const minutes = parseInt(minutesStr);
+  const seconds = parseInt(secondsParts[0]);
+  const milliseconds = secondsParts.length > 1 ? parseInt(secondsParts[1]) : 0;
+  return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+}
+
+function extractTimes(timestamp: string): [number, number] {
+  const [time1, time2] = timestamp.split(' --> ');
+  const startTimeInSeconds = timeToSeconds(time1);
+  const endTimeInSeconds = timeToSeconds(time2);
+  return [Math.round(startTimeInSeconds), Math.round(endTimeInSeconds)];
+}
+
+async function extractClip(inputFilePath: string, startTime: number, endTime: number, outputFilePath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const ffmpegProcess = spawn(ffmpegPath!, [
+      '-y',
+      '-i', inputFilePath,
+      '-ss', startTime.toString(),
+      '-to', endTime.toString(),
+      '-c', 'copy',
+      outputFilePath
+    ]);
+
+
+    ffmpegProcess.stderr.on('data', (data) => {
+      console.error(`FFmpeg stderr: ${data}`);
+      });
+
+    ffmpegProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log('Clip extracted successfully');
+        resolve();
+      } else {
+        console.error(`Error extracting clip. ffmpeg process exited with code ${code}`);
+        reject(new Error(`Error extracting clip. ffmpeg process exited with code ${code}`));
+      }
+    });
+  });
 }
