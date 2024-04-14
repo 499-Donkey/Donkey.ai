@@ -296,6 +296,11 @@ function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Pro
   });
 }
 
+type SessionId = string;
+
+// Simulated in-memory chat history storage
+const chatHistoryStore: Record<SessionId, { role: string, content: string }[]> = {};
+
 export const extractVideo = async (
   req: Request,
   res: Response,
@@ -307,6 +312,11 @@ export const extractVideo = async (
   const transcript = fs.readFileSync(filePath, "utf8");
 
   try {
+    const sessionId = req.body.sessionId as SessionId;  
+    const chatHistory = chatHistoryStore[sessionId] || [];
+
+    const userQuery = req.body.userEnter.trim().replaceAll('\n', ' ');
+    chatHistory.push({ role: 'user', content: userQuery });
 
     console.log("User enter: " + req.body.userEnter);
 
@@ -352,8 +362,10 @@ export const extractVideo = async (
 
     const response = await chain.invoke({
       question: sanitizedQuestion,
-      chat_history: req.body.history || [],
+      chat_history: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n')
     });
+
+    chatHistoryStore[sessionId] = chatHistory;
 
     console.log('success create response');
     console.log('response', response);
@@ -374,7 +386,7 @@ export const extractVideo = async (
     
     console.log("finalpath: " + finalpath);
 
-    res.status(200).json(response);
+    res.status(200).json({ response: response, chatHistory: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n') });
     //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
   } catch (error) {
     next(error);
