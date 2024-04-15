@@ -1,9 +1,10 @@
+// page/create_accoount.tsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/CreateAccount.css';
 import googleLogo from '../assets/google-logo.svg';
 import microsoftLogo from '../assets/microsoft-logo.svg';
-import { signUp } from '../network/users_api';
+import { signUp,getGoogleAuthUrl, getMicrosoftAuthUrl } from '../network/users_api';
 
 
 const CreateAccount = () => {
@@ -11,6 +12,26 @@ const CreateAccount = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const url = await getGoogleAuthUrl();
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error fetching the Google auth URL', error);
+      setErrorMessage('Failed to continue with Google. Please try again.');
+    }
+  };
+
+  const handleMicrosoftSignUp = async () => {
+    try {
+      const url = await getMicrosoftAuthUrl();
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error fetching the Microsoft auth URL', error);
+      setErrorMessage('Failed to continue with Microsoft. Please try again.');
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -40,15 +61,15 @@ const CreateAccount = () => {
           <h2>Create Account</h2>
           <p>Sync your work calendar to start using Donkey</p>
           <div className="social-login">
-            <button className="social-button google">
-              <img src={googleLogo} alt="Google" />
-              <span>Continue with Google</span>
-            </button>
-            <button className="social-button microsoft">
-              <img src={microsoftLogo} alt="Microsoft" />
-              <span>Continue with Microsoft</span>
-            </button>
-          </div>
+        <button className="social-button google" onClick={handleGoogleSignUp}>
+          <img src={googleLogo} alt="Google" />
+          <span>Continue with Google</span>
+        </button>
+        <button className="social-button microsoft" onClick={handleMicrosoftSignUp}>
+          <img src={microsoftLogo} alt="Microsoft" />
+          <span>Continue with Microsoft</span>
+        </button>
+      </div>
           <p className="calendar-access" style={{ marginTop: '40px', textDecoration: 'underline' }}>
             Why does Donkey.ai need calendar access?
           </p>
