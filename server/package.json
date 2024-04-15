@@ -26,6 +26,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@azure/msal-node": "^2.6.6",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -38,6 +39,7 @@
     "ffmpeg-static": "^5.2.0",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
+    "googleapis": "^134.0.0",
     "http-errors": "^2.0.0",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0",

@@ -1,3 +1,4 @@
+// server/src/controllers/user.ts
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import UserModel from "../models/user";
@@ -43,6 +44,7 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
         }
 
         const passwordHashed = await bcrypt.hash(passwordRaw, 10);
+        console.log(`Hashed password for ${email}:`, passwordHashed);
 
         const newUser = await UserModel.create({
             username: username,
@@ -80,6 +82,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
+        console.log(`Password match for ${username}:`, passwordMatch); 
 
         if (!passwordMatch) {
             throw createHttpError(401, "Invalid credentials");
