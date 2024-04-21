@@ -56,13 +56,15 @@ export const uploadFile = async (
       console.log("The tokens are bigger than 4096, processing large transcript");
       ({ analysis, sumAnalysis } = await processLargeTranscript(transcript));
       contentToWrite = sumAnalysis;
+      fs.writeFileSync(path.join(__dirname, "../result/chatAnalysis.txt"), contentToWrite);
     } else {
       console.log("The tokens are smaller than 4096, processing transcript");
-      analysis = await getChatGPTAnalysis(transcript, false);
-      contentToWrite = analysis;
+      analysis = await getFinalAnalysis(transcript);
+      contentToWrite = transcript;
+      fs.writeFileSync(path.join(__dirname, "../result/chatAnalysis.txt"), contentToWrite);
     }
 
-    fs.writeFileSync(path.join(__dirname, "../result/chatAnalysis.txt"), contentToWrite);
+    
   
     res.status(200).json({ transcript, transcriptFilePath, analysis, sumAnalysis});
   } catch (error) {
@@ -80,11 +82,12 @@ async function processLargeTranscript(transcript: string):  Promise<{ analysis: 
     const transcriptFilePath = path.join(__dirname, `../result/transcript_${i + 1}.txt`);
     i++;
     fs.writeFileSync(transcriptFilePath, chunk);
-    const chunkAnalysis = await getChatGPTAnalysis(chunk, false);
+    const chunkAnalysis = await getChunksAnalysis(chunk);
     sumAnalysis += chunkAnalysis + '\n';
+    console.log(chunkAnalysis, "=>>")
     removeFile(transcriptFilePath);
   }
-  const analysisCombine = await getChatGPTAnalysis(sumAnalysis, true);
+  const analysisCombine = await getFinalAnalysis(sumAnalysis);
   analysis += analysisCombine + '\n';
   return {analysis, sumAnalysis};
 }
@@ -138,43 +141,6 @@ async function convertToOpus(inputFilePath: string): Promise<string> {
   });
 }
 
-// export const chatWithUser = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction) => {
-//   console.log("trying to chat")
-//   try{
-//     const analysisFilePath = path.join(__dirname, "../result/chatAnalysis.txt");
-//     const analysis = fs.readFileSync(analysisFilePath, "utf8");
-
-//     const data = {
-//       model: "gpt-3.5-turbo",
-//       messages: [
-//         { role: "system", content: "You are a helpful assistant." },
-//         { role: "user", content: "Please answer the question based on the analysis, which is from videos or audios:" },
-//         { role: "user", content: analysis },
-//         { role: "user", content: req.body.question },
-//       ],
-//     };
-
-//     const response = await axios.post(
-//       "https://api.openai.com/v1/chat/completions",
-//       data,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
-//           'Content-Type': 'application/json',
-//         },
-//       }
-//     );
-
-//     const answer = response.data.choices[0].message.content;
-//     res.status(200).json({ answer })
-//   }
-//   catch(error){
-//     next(error);
-//   }
-// }
 
 export const chatWithUser = async (req: Request, res: Response, next: NextFunction) =>  {
   try {
@@ -254,29 +220,19 @@ async function getTranscript(audioFilePath: string) {
 }
 
 
-function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Promise<string> {
+function getChunksAnalysis(transcript: string): Promise<string> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      let data;
-      if(isLargeTranscript === false){
-      data = {
+
+      const data = {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: "Please summarize the following transcript:" },
+          { role: "user", content: "I need a structured timeline of a speech transcript organized by topics. Please format it as follows: For each segment of the speech, specify the start and end times, list the key words, and provide a concise summary. Use this template for each topic: [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; and so on. Ensure that each topic is clearly separated, include relevant search-friendly keywords that capture the essence of each section, and make sure the summaries are detailed yet succinct. The entire timeline should be concise, ideally not exceeding 500 words, capturing all significant points from the speech." },
           { role: "user", content: transcript },
         ],
       };
-      }else{
-        data = {
-          model: "gpt-3.5-turbo",
-          messages: [
-            { role: "system", content: "You are a helpful assistant." },
-            { role: "user", content: "Please summarize transcript below:" },
-            { role: "user", content: transcript },
-          ],
-        };
-      }
+      
       axios.post(
         "https://api.openai.com/v1/chat/completions",
         data,
@@ -289,8 +245,40 @@ function getChatGPTAnalysis(transcript: string, isLargeTranscript: boolean): Pro
       )
       .then(response => resolve(response.data.choices[0].message.content))
       .catch(error => {
-        console.error("Error in getChatGPTAnalysis:", error);
-        reject(new Error("Error in getChatGPTAnalysis"));
+        console.error("Error in getChunksAnalysis:", error);
+        reject(new Error("Error in getChunksAnalysis"));
+      });
+    }, 3000);
+  });
+}
+
+function getFinalAnalysis(transcript: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+
+      const data = {
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: "I need you to generate a timeline to help me understand the analysis clearly. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format: [xx:xx:xx - xx:xx:xx]: Topic1: [summary]; [xx:xx:xx - xx:xx:xx]: Topic2: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
+          { role: "user", content: transcript },
+        ],
+      };
+      
+      axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPEN_AI_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(response => resolve(response.data.choices[0].message.content))
+      .catch(error => {
+        console.error("Error in getFinalAnalysis:", error);
+        reject(new Error("Error in getFinalAnalysis"));
       });
     }, 3000);
   });
