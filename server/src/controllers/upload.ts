@@ -260,7 +260,7 @@ function getFinalAnalysis(transcript: string): Promise<string> {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: "I need you to generate a timeline to help me understand the analysis clearly. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format: [xx:xx:xx - xx:xx:xx]: Topic1: [summary]; [xx:xx:xx - xx:xx:xx]: Topic2: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
+          { role: "user", content: "I need you to generate a timeline to help me understand the analysis clearly. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format:  [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
           { role: "user", content: transcript },
         ],
       };
