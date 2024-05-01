@@ -1,0 +1,134 @@
+/* Upgrade.css */
+
+.upgrade-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    gap: 2rem;
+  }
+  
+  .plan {
+    flex-basis: calc(50% - 1rem);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+  
+  .plan-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .plan-cost {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .plan-features {
+    margin: 1rem 0;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .plan-features li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .plan-features li::before {
+    content: '✓';
+    color: #007bff;
+    margin-right: 0.5rem;
+  }
+  
+  .plan-action {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .plan-action button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .plan-action button:hover {
+    background-color: #0056b3;
+  }
+  
+  .current-plan {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  
+  @media (max-width: 768px) {
+    .upgrade-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .plan {
+      flex-basis: auto;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+  /* Additional styles for modal */
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* High z-index to overlay on top of other content */
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+  }
+  
+  .close-button {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .modal-actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .modal-actions button {
+    margin-right: 10px;
+    padding: 10px 20px;
+  }
+  

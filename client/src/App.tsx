@@ -8,6 +8,8 @@ import ScriptList from "./pages/scripts";
 import Auth from "./pages/auth";
 import CreateAccount from "./pages/create_account"; // 确保引入了CreateAccount组件
 import OAuthCallback from "./pages/OAuthCallback"; // import your OAuth callback handler component
+import AccountSettings from "./pages/AccountSetting";
+import Upgrade from "./pages/Upgrade";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/create-account" element={<CreateAccount />} />  
         <Route path="/auth/google/callback" element={<OAuthCallback />} />
+        <Route path="/account-settings" element={<AccountSettings />} />
+        <Route path="/upgrade" element={<Upgrade />} />
       </Routes>
     </>
   );

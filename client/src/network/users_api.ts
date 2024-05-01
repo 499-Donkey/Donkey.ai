@@ -1,4 +1,4 @@
-// user_api.ts
+// network/user_api.ts
 
 // import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { User } from "../models/user"

@@ -1,0 +1,150 @@
+/* AccountSetting.css */
+
+.account-settings-container {
+    display: flex;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.settings-sidebar {
+    flex-basis: 250px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-sidebar-item {
+    padding: 1rem;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.settings-sidebar-item:hover,
+.settings-sidebar-item.active {
+    background-color: #e8e8e8;
+    border-left-color: #007bff;
+}
+
+.settings-content {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.content-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.user-info {
+    flex-grow: 1;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #666;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .account-settings-container {
+        flex-direction: column;
+    }
+
+    .settings-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        flex-basis: auto;
+    }
+
+    .settings-sidebar-item {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .settings-content {
+        padding: 1rem;
+    }
+}
+
+/* AccountSetting.css */
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;  /* 使头像显示为圆形 */
+    background-color: #007bff;  /* 头像的背景颜色 */
+    color: white;  /* 字母的颜色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;  /* 调整字母大小 */
+    font-weight: bold;  /* 字母加粗 */
+    margin-right: 10px;  /* 和右侧内容的间距 */
+}
+
+.profile-info h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px; /* 根据需要调整 */
+}
+
+.profile-info p {
+    margin: 5px 0; /* 给邮件地址一些上下间距 */
+}
+
+.edit-button {
+    padding: 5px 10px; /* 按钮内边距 */
+    background-color: #007bff; /* 按钮背景颜色 */
+    color: white; /* 按钮文字颜色 */
+    border: none; /* 去除边框 */
+    border-radius: 5px; /* 按钮边角圆滑 */
+    cursor: pointer; /* 鼠标悬停时显示指针 */
+    outline: none; /* 去除焦点轮廓 */
+}
+
+.edit-button:hover {
+    background-color: #0056b3; /* 鼠标悬停时的背景颜色 */
+}
+

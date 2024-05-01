@@ -1,3 +1,4 @@
+/*Auth.css*/
 .auth-container {
   max-width: 400px;
   margin: 40px auto;
@@ -221,5 +222,13 @@
 
 .logout-button:hover {
   background-color: #d32f2f; /* 鼠标悬停时的背景色变深 */
+}
+.modal-message {
+  font-size: 1.2rem; /* 调整字体大小 */
+  font-weight: bold; /* 字体加粗 */
+  color: #00ff15; /* 可以设置颜色 */
+  padding: 10px; /* 根据需要添加内边距 */
+  margin: 10px 0; /* 添加适当的外边距 */
+  text-align: center; /* 如果需要，可以居中对齐文本 */
 }
 
