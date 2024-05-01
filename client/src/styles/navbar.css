@@ -145,3 +145,122 @@
         /* Aligns the button to the right */
     }
 }
+
+.user-menu {
+    position: relative;
+  }
+
+  .user-name-button {
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  .user-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+  } 
+
+  .user-menu-dropdown {
+    
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+  .dropdown-item {
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+  }
+  .dropdown-item:hover {
+    background-color: #f2f2f2;
+  }
+
+  .logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  /* Make sure dropdown is shown when state is toggled */
+.user-menu-dropdown.show {
+    display: block;
+  }
+  /* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .nav-action-buttons {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .upgrade-button {
+        margin-left: auto;
+    }
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .user-initials {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem; /* 或者根据你需要的大小调整 */
+    margin-right: 10px;
+  }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.modal-message {
+    font-size: 1.2rem; /* 调整字体大小 */
+    font-weight: bold; /* 字体加粗 */
+    color: #ff0000; /* 可以设置颜色 */
+    padding: 10px; /* 根据需要添加内边距 */
+    margin: 10px 0; /* 添加适当的外边距 */
+    text-align: center; /* 如果需要，可以居中对齐文本 */
+}

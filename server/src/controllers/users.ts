@@ -82,7 +82,7 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
-        console.log(`Password match for ${username}:`, passwordMatch); 
+        //console.log(`Password match for ${username}:`, passwordMatch); 
 
         if (!passwordMatch) {
             throw createHttpError(401, "Invalid credentials");
@@ -103,4 +103,23 @@ export const logout: RequestHandler = (req, res, next) => {
             res.sendStatus(200);
         }
     });
+};
+
+export const updatePassword: RequestHandler = async (req, res, next) => {
+    try {
+        const userId = req.session.userId; // 从会话获取用户ID
+        const { newPassword } = req.body;
+
+        if (!newPassword) {
+            throw createHttpError(400, "New password required");
+        }
+
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(newPassword, salt);
+
+        await UserModel.findByIdAndUpdate(userId, { password: hashedPassword });
+        res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+        next(createHttpError(500, "Internal Server Error"));
+    }
 };

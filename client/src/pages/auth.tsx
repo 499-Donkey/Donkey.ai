@@ -12,6 +12,7 @@ const Auth = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginSuccess, setLoginSuccess] = useState('');
+    const [showModal, setShowModal] = useState(false);  // 状态控制显示模态窗口
     const navigate = useNavigate();
 
     // 检查登录状态
@@ -28,28 +29,24 @@ const Auth = () => {
         event.preventDefault();
         try {
             const user = await login({ username: email, password });
-            setLoginSuccess('登录成功！欢迎回来.');
-            localStorage.setItem('isLoggedIn', 'true'); // 更新登录状态
-            navigate('/'); // 可以选择重定向到其他页面
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            setShowModal(true); // 显示登录成功的弹窗
+            setTimeout(() => {
+                setShowModal(false); // 2秒后自动关闭弹窗
+                navigate('/'); // 可能还需要重定向到主页或其他页面
+            }, 900); // 2000毫秒后执行
         } catch (error) {
             console.error('登录失败:', error);
-            setLoginSuccess('登录失败，请重试。');
+            setShowModal(true); // 显示错误信息的弹窗
+            setTimeout(() => {
+                setShowModal(false); // 也许这里也要自动关闭
+            }, 900);
         }
     };
+    
 
-    // 登出处理
-    const handleLogout = async () => {
-        try {
-            await logout();
-            setLoginSuccess('您已登出。');
-            localStorage.setItem('isLoggedIn', 'false'); // 更新登录状态
-            setEmail('');
-            setPassword('');
-            navigate('/'); // 可以选择重定向到登录页面
-        } catch (error) {
-            console.error('登出失败:', error);
-        }
-    };
+    
     const handleGoogleLogin = async () => {
         try {
           const url = await getGoogleAuthUrl();
@@ -85,6 +82,13 @@ const Auth = () => {
     return (
         
         <div className="auth-container">
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                    <p className="modal-message">Login Successful, Welcome Back!</p>
+                    </div>
+                </div>
+            )}
             <div className="auth-logo">Donkey.AI</div>
             <div className="auth-title">Sign In</div>
             <div className="social-login">
@@ -122,14 +126,9 @@ const Auth = () => {
         placeholder="Password"
         required
     />
-    {localStorage.getItem('isLoggedIn') === 'true' ? (
-        <button onClick={handleLogout} className="logout-button">Logout</button>
-    ) : (
-        <>
-            <button type="submit" className="sign-in-button">Sign in</button>
-            {/* 如果需要，可以在这里添加其他按钮或表单元素 */}
-        </>
-    )}
+    {/* 显示登录按钮，而不考虑登出按钮 */}
+    <button type="submit" className="sign-in-button">Sign in</button>
+    {/* 如果需要，可以在这里添加其他按钮或表单元素 */}
 </form>
             
             <div className="auth-footer">
