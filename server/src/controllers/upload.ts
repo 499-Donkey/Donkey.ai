@@ -360,10 +360,12 @@ export const extractVideo = async (
 
     const chain = makeChain(vectorStore);
 
+   //chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n')
     const response = await chain.invoke({
       question: sanitizedQuestion,
-      chat_history: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n')
+      chat_history: req.body.history || [],
     });
+
 
     chatHistoryStore[sessionId] = chatHistory;
 
@@ -382,12 +384,13 @@ export const extractVideo = async (
     
     const outputFilePath = path.join(__dirname, `../result/clip.mp4`);
 
-    const finalpath = await extractClip(inputFilePath, start, end, outputFilePath);
-    
-    console.log("finalpath: " + finalpath);
+    await extractClip(inputFilePath, start, end, outputFilePath);
+
+    console.log("Output file: " + outputFilePath);
 
     res.status(200).json({ response: response, chatHistory: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n') });
     //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+
   } catch (error) {
     next(error);
   }
@@ -410,6 +413,7 @@ function extractTimes(timestamp: string): [number, number] {
   return [Math.round(startTimeInSeconds), Math.round(endTimeInSeconds)];
 }
 
+/*
 async function extractClip(inputFilePath: string, startTime: number, endTime: number, outputFilePath: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const ffmpegProcess = spawn(ffmpegPath!, [
@@ -436,4 +440,47 @@ async function extractClip(inputFilePath: string, startTime: number, endTime: nu
       }
     });
   });
+}
+*/
+
+
+async function extractClip(inputFilePath: string, startTime: number, endTime: number, outputFilePath: string): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const ffmpegProcess = spawn(ffmpegPath!, [
+      '-y',
+      '-i', inputFilePath,
+      '-ss', startTime.toString(),
+      '-to', endTime.toString(),
+      '-c', 'copy',
+      outputFilePath
+    ]);
+
+    ffmpegProcess.stderr.on('data', (data) => {
+      console.error(`FFmpeg stderr: ${data}`);
+    });
+
+    ffmpegProcess.on('close', (code) => {
+      if (code === 0) {
+        console.log('Clip extracted successfully');
+        resolve(outputFilePath);
+      } else {
+        console.error(`Error extracting clip. ffmpeg process exited with code ${code}`);
+        reject(new Error(`Error extracting clip. ffmpeg process exited with code ${code}`));
+      }
+    });
+  });
+}
+
+
+export const getvideo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const videoPath = path.join(__dirname, `../result/clip.mp4`);
+    res.sendFile(videoPath);
+  } catch (error) {
+    next(error);
+  }
 }

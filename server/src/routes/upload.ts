@@ -15,4 +15,6 @@ router.post('/chat',  UploadController.chatWithUser);
 
 router.post('/extract', UploadController.extractVideo);
 
+router.get('/video', UploadController.getvideo);
+
 export default router;

@@ -55,6 +55,7 @@ const Upload: React.FC = () => {
     history: [],
   });
   const { messages, history } = userEnterState;
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setInitialization();
@@ -158,13 +159,24 @@ const Upload: React.FC = () => {
     }));
 
     try {
+      console.log("extract function called");
       const response = await fetch("/api/upload/extract", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: 'video/mp4;charset=UTF-8'
         },
         body: JSON.stringify({ userEnter, history }),
       });
+      
+      console.log('fetch called');
+
+      const v_response = await fetch('/api/upload/video');
+      console.log('video fetch called: ' + v_response);
+      const videoBlob = await v_response.blob();
+      const url = URL.createObjectURL(videoBlob);
+      setVideoUrl(url);
+
       const data = await response.json();
 
       setUserEnterState((state) => ({
@@ -179,6 +191,7 @@ const Upload: React.FC = () => {
         ],
         history: [...state.history, [question, data.text]],
       }));
+
     } catch (error) {
       console.error("Extract error:", error);
     }
@@ -338,6 +351,7 @@ const Upload: React.FC = () => {
         </div>
       ) : (
         <div className="extractbox">
+          
           <form onSubmit={handleExtractSubmit} style={{ position: "relative" }}>
             <input
               type="text"
@@ -354,7 +368,19 @@ const Upload: React.FC = () => {
               Submit
             </button>
           </form>
-          
+
+          <h3>Video Clip shows: </h3>
+          <div className="video show">
+            {videoUrl && (
+              <div className="video-container">
+                <video controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )}
+          </div>
+
         </div>
       )}
     </div>
