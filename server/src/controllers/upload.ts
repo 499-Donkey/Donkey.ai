@@ -260,7 +260,7 @@ function getFinalAnalysis(transcript: string): Promise<string> {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: "I need you to generate a timeline to help me understand the analysis clearly. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format:  [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
+          { role: "user", content: "I want you to generate a complete timeline from beginning to end. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format:  [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
           { role: "user", content: transcript },
         ],
       };
@@ -380,6 +380,34 @@ export const extractVideo = async (
     next(error);
   }
 }
+
+export const extractTimeline = async (req: Request, res: Response, next: NextFunction) => {
+  console.log("Trying to extract timeline:", req.body);
+  
+  try {
+    const { startTime: start, endTime: end } = req.body;
+
+    if (!start || !end) {
+      return res.status(400).json({ error: "Missing start or end time" });
+    }
+
+    console.log("Starting time: " + start);
+    console.log("Ending time: " + end);
+
+    const inputFilePath = path.join(__dirname, `../result/temp_audio_1.mp4`);
+    const outputFilePath = path.join(__dirname, `../result/clip.mp4`);
+
+    const finalPath = await extractClip(inputFilePath, timeToSeconds(start), timeToSeconds(end), outputFilePath);
+    
+    console.log("Final path: " + finalPath);
+
+    res.status(200).json();
+  } catch (error) {
+    console.error("Error in extractTimeline:", error);
+    next(error);
+  }
+};
+
 
 function timeToSeconds(time: string): number {
   const [hoursStr, minutesStr, secondsStr] = time.split(':');
