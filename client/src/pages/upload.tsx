@@ -60,6 +60,7 @@ const Upload: React.FC = () => {
     history: [],
   });
   const { messages, history } = userEnterState;
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setInitialization();
@@ -170,6 +171,15 @@ const Upload: React.FC = () => {
         },
         body: JSON.stringify({ userEnter, history }),
       });
+
+      console.log('fetch called');
+
+      const v_response = await fetch('/api/upload/video');
+      console.log('video fetch called: ' + v_response);
+      const videoBlob = await v_response.blob();
+      const url = URL.createObjectURL(videoBlob);
+      setVideoUrl(url);
+
       const data = await response.json();
 
       setUserEnterState((state) => ({
@@ -201,16 +211,22 @@ const Upload: React.FC = () => {
         },
         body: JSON.stringify({ startTime, endTime }),
       });
-      if (response.ok) {
-        setVideoReady(true); 
+
+      console.log('Timeline fetch called');
+
+      const v_response = await fetch('/api/upload/video');
+      console.log('video fetch called: ' + v_response);
+      if (v_response.ok) {
+        const videoBlob = await v_response.blob();
+        const url = URL.createObjectURL(videoBlob);
+        setVideoUrl(url);
+      } else {
+        console.error("Failed to fetch video:", v_response.statusText);
       }
+
     } catch (error) {
       console.error("Error generating video:", error);
     }
-  };
-
-  const handleDownloadVideo = () => {
-    
   };
 
 
@@ -410,13 +426,20 @@ const Upload: React.FC = () => {
             </button>
           </form>
 
-          {videoReady && (
-            <button className="button" onClick={handleDownloadVideo}>
-              Download Video
-            </button>
-          )}
-        
           
+
+          <div className="video show">
+            {videoUrl && (
+              <div className="video-container">
+                <video controls>
+                  <source src={videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )}
+          </div>
+
+
         </div>
       )}
     </div>

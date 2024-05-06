@@ -453,3 +453,16 @@ async function extractClip(inputFilePath: string, startTime: number, endTime: nu
     });
   });
 }
+
+export const getvideo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const videoPath = path.join(__dirname, `../result/clip.mp4`);
+    res.sendFile(videoPath);
+  } catch (error) {
+    next(error);
+  }
+}
