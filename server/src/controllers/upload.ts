@@ -262,7 +262,7 @@ function getFinalAnalysis(transcript: string): Promise<string> {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: "I want you to generate a complete timeline from beginning to end. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format:  [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
+          { role: "user", content: "I want you to generate and return a complete timeline from beginning to end. Format the timeline as follows: For each topic, specify the start and end times, and provide a concise summary. Use this format:  [xx:xx:xx - xx:xx:xx]: [Topic]: [summary]; [xx:xx:xx - xx:xx:xx]: [Topic]: [summary];... Make sure to clearly demarcate different topics and ensure the summaries capture the key details." },
           { role: "user", content: transcript },
         ],
       };
@@ -388,7 +388,7 @@ export const extractVideo = async (
     next(error);
   }
 }
-
+*/
 
 export const extractTimeline = async (req: Request, res: Response, next: NextFunction) => {
   console.log("Trying to extract timeline:", req.body);
@@ -428,12 +428,12 @@ function timeToSeconds(time: string): number {
   return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
 }
 
-function extractTimes(timestamp: string): [number, number] {
-  const [time1, time2] = timestamp.split(' --> ');
-  const startTimeInSeconds = timeToSeconds(time1);
-  const endTimeInSeconds = timeToSeconds(time2);
-  return [Math.round(startTimeInSeconds), Math.round(endTimeInSeconds)];
-}
+// function extractTimes(timestamp: string): [number, number] {
+//   const [time1, time2] = timestamp.split(' --> ');
+//   const startTimeInSeconds = timeToSeconds(time1);
+//   const endTimeInSeconds = timeToSeconds(time2);
+//   return [Math.round(startTimeInSeconds), Math.round(endTimeInSeconds)];
+// }
 
 
 async function extractClip(inputFilePath: string, startTime: number, endTime: number, outputFilePath: string): Promise<void> {
