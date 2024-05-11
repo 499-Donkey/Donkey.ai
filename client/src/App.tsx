@@ -10,6 +10,9 @@ import CreateAccount from "./pages/create_account"; // 确保引入了CreateAcco
 import OAuthCallback from "./pages/OAuthCallback"; // import your OAuth callback handler component
 import AccountSettings from "./pages/AccountSetting";
 import Upgrade from "./pages/Upgrade";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+
 
 function App() {
   return (
@@ -24,6 +27,8 @@ function App() {
         <Route path="/auth/google/callback" element={<OAuthCallback />} />
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/upgrade" element={<Upgrade />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />  // 添加重置密码的路由
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
     </>
   );

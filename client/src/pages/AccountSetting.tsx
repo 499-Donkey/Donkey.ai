@@ -1,71 +1,61 @@
+
 // AccountSetting.tsx
 import React, { useState } from 'react';
+import { updatePassword } from '../network/users_api'; 
 import '../styles/AccountSetting.css';
 
 const AccountSetting = () => {
     const [activeTab, setActiveTab] = useState('general');
     const userEmail = localStorage.getItem('userEmail') || '';
-    const [password, setPassword] = useState('');  // 用于输入新密码
-    const [isEditing, setEditing] = useState(false);  // 控制编辑状态
+    const [newPassword, setNewPassword] = useState('');
+    const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);  // 控制显示密码更新区域
 
-    // 从localStorage获取的用户名
-    const userName = "username"; // 这应该基于实际登录用户信息获取
-
-    // 处理密码更新
     const handlePasswordUpdate = async () => {
-        const response = await fetch('/api/users/update-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ newPassword: password })
-        });
-
-        if (response.ok) {
-            alert('Password updated successfully');
-            setPassword('');  // 清空密码字段
-            setEditing(false);  // 关闭编辑模式
-        } else {
-            alert('Failed to update password');
+        try {
+            await updatePassword(newPassword);
+            alert('Password updated successfully!');
+            setNewPassword('');  // 清空密码输入
+            setShowPasswordUpdate(false);  // 隐藏密码更新区域
+        } catch (error) {
+            if (error instanceof Error) {
+                alert('Password update failed: ' + error.message);
+            } else {
+                alert('Password update failed due to an unknown error');
+            }
         }
+    };
+
+    const toggleChangePassword = () => {
+        setShowPasswordUpdate(!showPasswordUpdate);  // 切换显示更新密码区域
     };
 
     const renderContent = () => {
         switch(activeTab) {
             case 'general':
                 return (
-                    <div className="profile-section">
-                        <div className="profile-header">
-                            <div className="profile-avatar">
-                                <div className="avatar-circle">
-                                    <span className="initials">{userName.charAt(0)}</span>
-                                </div>
+                    <div>
+                        <h2>General Settings</h2>
+                        <p>Current User: <span className="user-email">{userEmail}</span></p>
+                        <p className="change-password-link" onClick={toggleChangePassword}>Change password?</p>
+                        {showPasswordUpdate && (
+                            <div className="password-update">
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={e => setNewPassword(e.target.value)}
+                                    placeholder="New Password"
+                                />
+                                <button onClick={handlePasswordUpdate}>Update Password</button>
                             </div>
-                            <div className="profile-info">
-                                <h2>{userName}</h2>
-                                <p>Email: {userEmail}</p>
-                                {isEditing ? (
-                                    <div>
-                                        <input
-                                            type="password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="New password"
-                                        />
-                                        <button onClick={handlePasswordUpdate}>Update Password</button>
-                                        <button onClick={() => setEditing(false)}>Cancel</button>
-                                    </div>
-                                ) : (
-                                    <button onClick={() => setEditing(true)}>Edit</button>
-                                )}
-                            </div>
-                        </div>
+                        )}
                     </div>
                 );
             case 'personalization':
-                return <div>Personalization settings</div>;
+                return <div>Personalization Settings</div>;
             case 'security':
-                return <div>Security settings</div>;
+                return <div>Security Settings</div>;
             case 'notifications':
-                return <div>Notification settings</div>;
+                return <div>Notifications Settings</div>;
             default:
                 return <div>Select a category</div>;
         }

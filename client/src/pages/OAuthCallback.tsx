@@ -10,22 +10,25 @@ const OAuthCallback = () => {
     useEffect(() => {
         const query = new URLSearchParams(location.search);
         const code = query.get('code');
-        const service = location.pathname.includes('google') ? 'google' : 'microsoft'; // Determine which service is being used
+        const service = location.pathname.includes('google') ? 'google' : 'microsoft';
     
         if (code) {
             const exchangeFunction = service === 'google' ? exchangeCodeForToken : exchangeCodeForMicrosoftToken;
             exchangeFunction(code)
                 .then((data) => {
                     console.log(`${service} login successful`, data);
+                    localStorage.setItem('isLoggedIn', 'true'); // 更新登录状态
                     navigate('/'); // Redirect to home or other page as needed
                 })
                 .catch((error) => {
                     console.error(`Error during ${service} token exchange:`, error);
+                    navigate('/auth'); // Optionally handle errors by redirecting back to login
                 });
         }
     }, [location, navigate]);
 
     return <div>Processing your login...</div>;
 };
+
 
 export default OAuthCallback;

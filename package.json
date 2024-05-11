@@ -9,11 +9,17 @@
         "start-mac": "npm run start-server & npm run start-client"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
+        "@types/nodemailer": "^6.4.15",
         "concurrently": "^8.2.2"
     },
     "dependencies": {
         "@azure/msal-node": "^2.6.6",
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
         "googleapis": "^134.0.0",
+        "mongoose": "^8.3.3",
+        "nodemailer": "^6.9.13",
         "react-bootstrap": "^2.10.1"
     }
 }
