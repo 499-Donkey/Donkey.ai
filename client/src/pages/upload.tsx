@@ -437,7 +437,7 @@ const Upload: React.FC = () => {
           
 
 
-          <div className="video show">
+          <div className="video-show">
             {videoUrl && (
               <div className="video-container">
                 <video controls>

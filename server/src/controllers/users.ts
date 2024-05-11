@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import UserModel from "../models/user";
 import bcrypt from "bcrypt";
-import sendEmail from '../util/sendEmail'; // 确保路径正确
+import sendEmail from '../util/sendEmail';
 import crypto from "crypto";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
@@ -66,7 +66,6 @@ export const login: RequestHandler = async (req, res, next) => {
             throw createHttpError(401, "Invalid credentials - User not found.");
         }
 
-        // 确保从数据库中获取的密码不是 undefined
         if (typeof user.password !== 'string') {
             throw createHttpError(500, "An unexpected error occurred.");
         }
@@ -86,9 +85,6 @@ export const login: RequestHandler = async (req, res, next) => {
 
 
 
-
-
-
 export const logout: RequestHandler = (req, res, next) => {
     req.session.destroy((error) => {
         if (error) {
@@ -98,8 +94,9 @@ export const logout: RequestHandler = (req, res, next) => {
     });
 };
 
-export const updatePassword: RequestHandler = async (req, res, next) => {
+export const updatePassword: RequestHandler = async (req, res) => {
     const userId = req.session.userId;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const { newPassword } = req.body as any;
     if (!newPassword) {
         throw createHttpError(400, "New password required");
@@ -167,16 +164,16 @@ export const resetPassword: RequestHandler = async (req, res, next) => {
             return res.status(404).send('Token is invalid or has expired');
         }
 
-        // 加密新密码并保存
-        user.password = await bcrypt.hash(password, 10);  // 确保密码加密完成后才赋值
-        user.passwordResetToken = undefined;  // 清除重置令牌
-        user.passwordResetExpires = undefined;  // 清除令牌到期时间
 
-        await user.save();  // 保存更改到数据库
+        user.password = await bcrypt.hash(password, 10);
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        await user.save();
 
         res.status(200).send('Password has been reset successfully');
     } catch (error) {
         console.error('Reset password error:', error);
-        next(error);  // 传递错误到下一个中间件
+        next(error);
     }
 };

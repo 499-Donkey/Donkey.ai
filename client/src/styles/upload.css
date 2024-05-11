@@ -322,18 +322,30 @@
   color: #0056b3;
 }
 
-.video-container {
+.video-show{
+  border: 2px solid #000000;
+  border-radius: 20px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center; 
-  height: 100%; 
+  height: 500px;
+  width: 100%; 
+}
 
-  background-color: black; 
-  border-radius: 19px;
+.video-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%; 
+  height: 500px;  
+  align-items: center; 
+  background-color: rgb(68, 64, 64); 
 }
 
 .video-container video {
-  width: 70%; 
-  height: auto; 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  width: 100%; 
+  height: 500px;  
 }
-
