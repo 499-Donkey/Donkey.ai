@@ -6,7 +6,6 @@ Donkey.AI is an innovative platform designed to streamline video content process
 
 - [Overview](#overview)
 - [Features](#features)
-- [Requirements](#requirements)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
 - [Team](#team)
@@ -24,30 +23,18 @@ Donkey.AI is a powerful tool for automated video content analysis. It simplifies
 - **Customizable Summaries:** Generate interactive summaries tailored to user preferences.
 - **Interactive Queries:** Enable users to search for specific information within videos using natural language queries.
 
-## Requirements
-
-To run this project, you need to create a `.env` file in the server directory with the following environment variables:
-
-- `MONGO_CONNECTION_STRING`: Your MongoDB connection string.
-- `PORT`: The port number for the server to listen on.
-- `OPEN_AI_KEY`: Your OpenAI API key.
-- `SESSION_SECRET`: A secret key for session management.
-
-Example `.env` file:
-
-
-
 ## Getting Started
 
 To get started with Donkey.AI, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/donkey-ai.git`
 2. Navigate to the Project Directory: `cd donkey-ai`
-3. Install dependencies (necessary for Windows): `npm install -D concurrently`
-4. In the server directory, add a .env file and configure it to connect to MongoDB. If using VSCode, you can use the MongoDB extension to facilitate the database connection.
-5. Build the Project: `npm run build`
-6. Windows: `npm run start-win`, MacOS: `npm run start-mac`
-7. Access the application at [http://localhost:3000](http://localhost:3000)
+3. (Window only, Mac can ignore this step) `npm i`
+4. Build the Project: `npm run build`
+5. Windows: `npm run start-win`, MacOS: `npm run start-mac`
+6. Access the application at [http://localhost:3000](http://localhost:3000)
+
+For detailed instructions on deploying and using Donkey.AI, refer to the [documentation](docs/README.md).
 
 ## Technology Stack
 

@@ -1,0 +1,215 @@
+/* AccountSetting.css */
+
+
+/* 添加或修改这些样式 */
+.general-settings-header {
+    font-size: 1.0rem; /* 放大标题字体 */
+    margin-bottom: 0.5rem; /* 调整间距 */
+}
+
+.user-email {
+    font-weight: bold; /* 加粗字体 */
+    text-decoration: underline; /* 下划线 */
+    cursor: pointer; /* 鼠标悬停时显示指针 */
+    transition: color 0.3s; /* 颜色变化的过渡效果 */
+}
+
+.user-email:hover {
+    color: #0056b3; /* 鼠标悬停时的颜色 */
+}
+
+
+
+.forgot-password-link {
+    font-size: 1.0rem; /* 放大忘记密码链接字体 */
+    margin-top: 0.5rem; /* 调整上边距 */
+    cursor: pointer; /* 添加指针鼠标样式 */
+    color: #0056b3; /* 可选：改变链接颜色 */
+    text-decoration: underline; /* 可选：添加下划线 */
+}
+
+
+.account-settings-container {
+    display: flex;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.settings-sidebar {
+    flex-basis: 250px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-sidebar-item {
+    padding: 1rem;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.settings-sidebar-item:hover,
+.settings-sidebar-item.active {
+    background-color: #e8e8e8;
+    border-left-color: #007bff;
+}
+
+.settings-content {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+/* 应用于整个设置内容区域的样式 */
+.settings-content .user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.settings-content .user-info input[type="password"],
+.settings-content .user-info input[type="email"] {
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 300px; /* 调整输入框宽度 */
+}
+
+.settings-content .user-info button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.settings-content .user-info button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .account-settings-container {
+        flex-direction: column;
+    }
+
+    .settings-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        flex-basis: auto;
+    }
+
+    .settings-sidebar-item {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .settings-content {
+        padding: 1rem;
+    }
+}
+
+
+.content-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.user-info {
+    flex-grow: 1;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #666;
+}
+
+.edit-button,
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover,
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="password"],
+input[type="email"] {
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 200px;
+    display: block;
+}
+
+.forgot-password {
+    color: #007bff;  /* 蓝色 */
+    text-decoration: underline;  /* 添加下划线 */
+    cursor: pointer;  /* 将鼠标光标变为手形，表示可点击 */
+    margin-top: 10px;  /* 上边距，根据需要调整 */
+}
+
+.forgot-password:hover {
+    color: #0056b3;  /* 鼠标悬停时的颜色更深 */
+}
+
+.change-password {
+    font-size: 1rem; /* 调整字体大小 */
+    color: #007bff; /* 蓝色字体 */
+    text-decoration: underline; /* 添加下划线 */
+    cursor: pointer; /* 显示指针样式 */
+    margin-top: 10px; /* 上边距 */
+}
+
+.change-password:hover {
+    color: #0056b3; /* 鼠标悬停时颜色变深 */
+}
+.change-password-link,
+.forgot-password-link {
+    font-size: 1rem; /* 适当大小 */
+    color: #007bff; /* 蓝色链接 */
+    text-decoration: underline; /* 下划线样式 */
+    cursor: pointer; /* 手形光标 */
+    margin-top: 10px; /* 顶部边距 */
+}
+
+.change-password-link:hover,
+.forgot-password-link:hover {
+    color: #0056b3; /* 鼠标悬停时的颜色 */
+}

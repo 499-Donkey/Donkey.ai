@@ -1,3 +1,4 @@
+/*Auth.css*/
 .auth-container {
   max-width: 400px;
   margin: 40px auto;
@@ -96,15 +97,13 @@
 }
 
 
-.auth-form input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin-bottom: 30px; /* 控制输入框之间的间距 */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  line-height: 1.5; /* 增加输入框内的行间距 */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  width: 100%; 
+  margin: auto;  
+  display: block;  
 }
+
 
 .auth-form input:hover,
 .auth-form input:focus {
@@ -207,3 +206,58 @@
   background-color: #F8F9FA; /* 导航条的背景色 */
   /* 更多样式 */
 }
+
+.logout-button {
+  background-color: #f44336; /* 红色背景 */
+  color: white; /* 白色文本 */
+  border: none; /* 无边框 */
+  padding: 10px 20px; /* 内填充 */
+  margin-top: 10px; /* 上边距 */
+  cursor: pointer; /* 鼠标指针为手形 */
+  border-radius: 4px; /* 圆角边框 */
+  outline: none; /* 点击时无轮廓 */
+}
+
+.logout-button:hover {
+  background-color: #d32f2f; /* 鼠标悬停时的背景色变深 */
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+
+.modal-message {
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.modal-message.success {
+  color: #007bff; /* 蓝色字体表示成功 */
+}
+
+.modal-message.error {
+  color: #dc3545; /* 红色字体表示失败 */
+}
+
+
