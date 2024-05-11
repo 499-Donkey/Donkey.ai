@@ -5,14 +5,16 @@ import * as UserController from "../controllers/users";
 
 const router = express.Router();
 
-// router.get("/", requiresAuth, UserController.getAuthenticatedUser);
-
 router.post("/signup", UserController.signUp);
-
 router.post("/login", UserController.login);
-
 router.post("/logout", UserController.logout);
+router.post("/update-password", UserController.updatePassword);
+router.post("/request-password-reset", UserController.requestPasswordReset);
+router.get('/reset-password/:token', (req, res) => {
+    console.log('Reset password route hit with token:', req.params.token);
+    res.redirect(`http://localhost:3000/reset-password/${req.params.token}`);
+});
 
-router.post("/update-password", UserController.updatePassword)
+
 
 export default router;

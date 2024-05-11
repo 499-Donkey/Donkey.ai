@@ -12,6 +12,7 @@ const Auth = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginSuccess, setLoginSuccess] = useState('');
+    const [isError, setIsError] = useState(false);
     const [showModal, setShowModal] = useState(false);  // 状态控制显示模态窗口
     const navigate = useNavigate();
 
@@ -31,19 +32,22 @@ const Auth = () => {
             const user = await login({ username: email, password });
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', email);
+            setLoginSuccess('Login Successful, Welcome Back!'); // 设置成功消息
             setShowModal(true); // 显示登录成功的弹窗
             setTimeout(() => {
                 setShowModal(false); // 2秒后自动关闭弹窗
                 navigate('/'); // 可能还需要重定向到主页或其他页面
-            }, 900); // 2000毫秒后执行
+            }, 2000); // 2000毫秒后执行
         } catch (error) {
             console.error('登录失败:', error);
+            setLoginSuccess('Login Failed, Please Try Again'); // 设置失败消息
             setShowModal(true); // 显示错误信息的弹窗
             setTimeout(() => {
                 setShowModal(false); // 也许这里也要自动关闭
-            }, 900);
+            }, 2000);
         }
     };
+    
     
 
     
@@ -82,13 +86,15 @@ const Auth = () => {
     return (
         
         <div className="auth-container">
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                    <p className="modal-message">Login Successful, Welcome Back!</p>
-                    </div>
-                </div>
-            )}
+{showModal && (
+    <div className="modal">
+        <div className="modal-content">
+            <p className={`modal-message ${isError ? 'error' : 'success'}`}>{loginSuccess}</p>
+        </div>
+    </div>
+)}
+
+
             <div className="auth-logo">Donkey.AI</div>
             <div className="auth-title">Sign In</div>
             <div className="social-login">

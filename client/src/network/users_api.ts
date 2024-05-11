@@ -119,3 +119,31 @@ export async function exchangeCodeForToken(code: string) {
     }
     return await response.json();
 }
+
+export async function updatePassword(newPassword: string): Promise<void> {
+    const response = await fetchData("/api/users/update-password", {
+        method: "POST",  // 使用 POST 请求
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newPassword }),
+    });
+    if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.error || 'Failed to update password');
+    }
+    return response.json(); // 返回响应结果
+}
+
+// network/user_api.ts
+
+export async function requestPasswordReset(email: string): Promise<void> {
+    const response = await fetchData("/api/users/request-password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+    });
+    if (!response.ok) {
+        const errorBody = await response.json();
+        throw new Error(errorBody.error || 'Failed to send password reset email');
+    }
+    return response.json();  // 可能不需要返回内容，但这里保持一致性
+}
