@@ -114,7 +114,7 @@
 
 .title-container {
   display: flex;
-  justify-content: end; 
+  justify-content: flex-end; 
   align-items: center; 
   padding-left: 8px;
   padding-right: 8px;
@@ -154,6 +154,34 @@
   margin: 15px;
 }
 
+.mode-selector button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #0056b3;
+  border-radius: 19px;
+  background-color: transparent;
+  color: #007bff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin: 12px;
+  margin-top: 40px;
+}
+
+.mode-selector button:hover {
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+.mode-selector button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+  
+}
 
 
 .chat-history {
@@ -162,8 +190,9 @@
   border: 2px solid #8e8e8e;
   width: 100%;
   margin-bottom: 20px;
-  margin-top: 40px;
+  margin-top: 20px;
   border-radius: 10px;
+  scrollbar-width: none;
 }
 
 
@@ -181,6 +210,7 @@
   padding: 10px;
   border-radius: 10px;
   background-color: #e1e7ee;
+  
 }
 
 .chat-history-user {
@@ -251,3 +281,59 @@
   border-color: #0056b3;
   color: #0056b3;
 }
+
+.extractbox {
+  width: 100%;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.extractbox form {
+  display: flex;
+  position: relative;
+}
+
+.extractbox input[type="text"] {
+  flex: 1;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.extractbox button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #0056b3;
+  border-radius: 19px;
+  background-color: transparent;
+  color: #007bff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin: 12px;
+  margin-bottom: 17px;
+}
+
+.extractbox button:hover {
+  background-color: #e7f5ff;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  height: 100%; 
+
+  background-color: black; 
+  border-radius: 19px;
+}
+
+.video-container video {
+  width: 70%; 
+  height: auto; 
+}
+
