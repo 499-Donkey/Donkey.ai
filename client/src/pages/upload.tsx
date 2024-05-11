@@ -164,10 +164,12 @@ const Upload: React.FC = () => {
     }));
 
     try {
+      console.log("extract function called");
       const response = await fetch("/api/upload/extract", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: 'video/mp4;charset=UTF-8'
         },
         body: JSON.stringify({ userEnter, history }),
       });
@@ -194,6 +196,7 @@ const Upload: React.FC = () => {
         ],
         history: [...state.history, [question, data.text]],
       }));
+
     } catch (error) {
       console.error("Extract error:", error);
     }
@@ -384,6 +387,7 @@ const Upload: React.FC = () => {
         </div>
       ) : (
         <div className="extractbox">
+          
           <form onSubmit={handleExtractSubmit} style={{ position: "relative" }}>
             <input
               type="text"
@@ -400,6 +404,7 @@ const Upload: React.FC = () => {
               Submit
             </button>
           </form>
+
 
           <form onSubmit={handleTimelineSubmit} style={{ position: "relative" }}>
             <input
@@ -427,6 +432,7 @@ const Upload: React.FC = () => {
           </form>
 
           
+
 
           <div className="video show">
             {videoUrl && (

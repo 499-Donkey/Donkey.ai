@@ -7,12 +7,14 @@ import { spawn } from "child_process";
 import ffmpegPath from "ffmpeg-static";
 import openaiTokenCounter from 'openai-gpt-token-counter';
 import { initPinecone } from '../util/pinecone_connect';
-import { PineconeStore  } from '@langchain/pinecone';
-import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '../models/pinecone';
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
+//import { PineconeStore  } from '@langchain/pinecone';
+//import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '../models/pinecone';
+import { PINECONE_INDEX_NAME} from '../models/pinecone';
+//import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
+//import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { Document } from "langchain/document";
-import { makeChain } from '../util/chain';
+//import { makeChain } from '../util/chain';
+import {queryPinecone, queryLLM, insertDocument} from '../util/chain_s';
 
 
 const MAX_TOKENS = 4096;
@@ -284,10 +286,13 @@ function getFinalAnalysis(transcript: string): Promise<string> {
   });
 }
 
+
+/*
 type SessionId = string;
 
 // Simulated in-memory chat history storage
 const chatHistoryStore: Record<SessionId, { role: string, content: string }[]> = {};
+
 
 export const extractVideo = async (
   req: Request,
@@ -348,10 +353,12 @@ export const extractVideo = async (
 
     const chain = makeChain(vectorStore);
 
+   //chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n')
     const response = await chain.invoke({
       question: sanitizedQuestion,
-      chat_history: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n')
+      chat_history: req.body.history || [],
     });
+
 
     chatHistoryStore[sessionId] = chatHistory;
 
@@ -370,16 +377,18 @@ export const extractVideo = async (
     
     const outputFilePath = path.join(__dirname, `../result/clip.mp4`);
 
-    const finalpath = await extractClip(inputFilePath, start, end, outputFilePath);
-    
-    console.log("finalpath: " + finalpath);
+    await extractClip(inputFilePath, start, end, outputFilePath);
+
+    console.log("Output file: " + outputFilePath);
 
     res.status(200).json({ response: response, chatHistory: chatHistory.map(entry => `${entry.role}: ${entry.content}`).join('\n') });
     //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+
   } catch (error) {
     next(error);
   }
 }
+
 
 export const extractTimeline = async (req: Request, res: Response, next: NextFunction) => {
   console.log("Trying to extract timeline:", req.body);
@@ -426,6 +435,7 @@ function extractTimes(timestamp: string): [number, number] {
   return [Math.round(startTimeInSeconds), Math.round(endTimeInSeconds)];
 }
 
+
 async function extractClip(inputFilePath: string, startTime: number, endTime: number, outputFilePath: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const ffmpegProcess = spawn(ffmpegPath!, [
@@ -454,6 +464,7 @@ async function extractClip(inputFilePath: string, startTime: number, endTime: nu
   });
 }
 
+
 export const getvideo = async (
   req: Request,
   res: Response,
@@ -465,4 +476,66 @@ export const getvideo = async (
   } catch (error) {
     next(error);
   }
+
+}
+
+const documentName = "transcript.txt";
+
+export const extractVideo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("trying to Extract video");
+  const filePath = path.join(__dirname, "../result/transcript.txt");
+  
+  const transcript = fs.readFileSync(filePath, "utf8");
+
+  const doc = new Document({
+    pageContent: transcript,
+    metadata: {documentName: documentName},
+  });
+
+  const sanitizedQuestion = req.body.userEnter.trim().replaceAll('\n', ' ');
+
+  try {
+
+    const pinecone = await initPinecone();
+    
+    const index = pinecone.Index(PINECONE_INDEX_NAME);
+    console.log('success create vector store');
+  
+    await insertDocument(index, doc);
+
+    console.log("finish pinecone");
+
+    const queryResponse = await queryPinecone(index, sanitizedQuestion, documentName);
+
+    console.log("finish create queryResponse");
+
+    if (queryResponse.matches.length > 0) {
+      const result = await queryLLM(queryResponse, sanitizedQuestion);
+      console.log("finish create result");
+      if (result.result.trim() === `I don't know.`) {
+        res.json({
+          ...result,
+          sources: [],
+        });
+      } else {
+        res.json(result);
+      }
+    } else {
+      res.json({
+        result: "Sorry, I don't know the answer to that question.",
+        sources: [],
+      });
+    }
+
+    res.status(200).json();
+    //await pinecone.deleteIndex(PINECONE_INDEX_NAME);
+
+  } catch (error) {
+    next(error);
+  }
+
 }
