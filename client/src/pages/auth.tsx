@@ -33,6 +33,7 @@ const Auth = () => {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', email);
             setLoginSuccess('Login Successful, Welcome Back!'); // 设置成功消息
+            setIsError(false); // 登录成功
             setShowModal(true); // 显示登录成功的弹窗
             setTimeout(() => {
                 setShowModal(false); // 2秒后自动关闭弹窗
@@ -41,12 +42,14 @@ const Auth = () => {
         } catch (error) {
             console.error('登录失败:', error);
             setLoginSuccess('Login Failed, Please Try Again'); // 设置失败消息
+            setIsError(true); // 登录失败
             setShowModal(true); // 显示错误信息的弹窗
             setTimeout(() => {
                 setShowModal(false); // 也许这里也要自动关闭
             }, 2000);
         }
     };
+    
     
     
 
@@ -77,18 +80,13 @@ const Auth = () => {
         }
     };
     
-    
-    
-    
-
-    
-
     return (
         
         <div className="auth-container">
 {showModal && (
     <div className="modal">
         <div className="modal-content">
+            {/* 根据 isError 状态选择对应的类名 */}
             <p className={`modal-message ${isError ? 'error' : 'success'}`}>{loginSuccess}</p>
         </div>
     </div>
