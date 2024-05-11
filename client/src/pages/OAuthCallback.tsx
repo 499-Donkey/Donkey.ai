@@ -17,7 +17,7 @@ const OAuthCallback = () => {
             exchangeFunction(code)
                 .then((data) => {
                     console.log(`${service} login successful`, data);
-                    localStorage.setItem('isLoggedIn', 'true'); // 更新登录状态
+                    localStorage.setItem('isLoggedIn', 'true');
                     navigate('/'); // Redirect to home or other page as needed
                 })
                 .catch((error) => {

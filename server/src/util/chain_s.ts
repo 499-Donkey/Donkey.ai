@@ -1,10 +1,10 @@
-import {OpenAIEmbeddings} from 'langchain/embeddings/openai';
+import {OpenAIEmbeddings} from '@langchain/openai';
 import {RecursiveCharacterTextSplitter} from 'langchain/text_splitter';
-import {OpenAI} from 'langchain/llms/openai';
+import {OpenAI} from '@langchain/openai';
 import {loadQAStuffChain} from 'langchain/chains';
 import {Document} from 'langchain/document';
 import type { QueryResponse} from '@pinecone-database/pinecone';
-import { PromptTemplate } from 'langchain/prompts';
+import { PromptTemplate } from '@langchain/core/prompts';
 import path from "path";
 import ffmpegPath from "ffmpeg-static";
 import { spawn } from "child_process";
@@ -83,20 +83,19 @@ export async function queryLLM(
   queryResponse: QueryResponse,
   question: string,
 ): Promise<LLMResponse> {
+
   const llm = new OpenAI({
     openAIApiKey: process.env.OPEN_AI_KEY ?? '' ,
-    temperature: 0.3,
-    modelName: 'gpt-4',
+    temperature: 0.4,
+    modelName: 'gpt-4-turbo',
   });
 
-  const promptTemplate = `You are a helpful AI assistant. Use the following pieces of context to answer the question at the end. I only want the answer have to be in this form: xx:xx:xx.xxx --> xx:xx:xx.xxx.
-  Ansewer only in form of: xx:xx:xx.xxx --> xx:xx:xx.xxx. No more than this form: xx:xx:xx.xxx --> xx:xx:xx.xxx.
-  If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
+  const promptTemplate = `Use the following pieces of context to answer the question at the end. I only want the answer have to be in this format: xx:xx:xx.xxx --> xx:xx:xx.xxx.
 
 {context}
 
 Question: {question}
-Answer in Italian:`;
+`;
 
 const prompt = PromptTemplate.fromTemplate(promptTemplate);
 

@@ -175,12 +175,10 @@ const Upload: React.FC = () => {
       });
 
       console.log('fetch called');
+      setVideoUrl(null);
 
-      const v_response = await fetch('/api/upload/video');
-      console.log('video fetch called: ' + v_response);
-      const videoBlob = await v_response.blob();
-      const url = URL.createObjectURL(videoBlob);
-      setVideoUrl(url);
+      await Getvideo();
+      console.log('New Video URL:', videoUrl); 
 
       const data = await response.json();
 
@@ -216,22 +214,27 @@ const Upload: React.FC = () => {
       });
 
       console.log('Timeline fetch called');
-
-      const v_response = await fetch('/api/upload/video');
-      console.log('video fetch called: ' + v_response);
-      if (v_response.ok) {
-        const videoBlob = await v_response.blob();
-        const url = URL.createObjectURL(videoBlob);
-        setVideoUrl(url);
-      } else {
-        console.error("Failed to fetch video:", v_response.statusText);
-      }
+      setVideoUrl(null);
+      await Getvideo();
+      console.log('New Video URL:', videoUrl); 
 
     } catch (error) {
       console.error("Error generating video:", error);
     }
   };
 
+
+  const Getvideo = async () => {
+    const v_response = await fetch('/api/upload/video');
+    console.log('video fetch called: ' + v_response);
+    if (v_response.ok) {
+      const videoBlob = await v_response.blob();
+      const url = URL.createObjectURL(videoBlob);
+      setVideoUrl(url);
+    } else {
+      console.error("Failed to fetch video:", v_response.statusText);
+    }
+  };
 
   return (
     <div className="upload-container">

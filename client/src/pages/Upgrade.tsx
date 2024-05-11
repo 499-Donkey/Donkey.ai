@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import '../styles/Upgrade.css';
 
 const Upgrade = () => {
-  const [modalVisible, setModalVisible] = useState(false); // 控制模态的显示
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);

@@ -13,39 +13,36 @@ const Auth = () => {
     const [password, setPassword] = useState('');
     const [loginSuccess, setLoginSuccess] = useState('');
     const [isError, setIsError] = useState(false);
-    const [showModal, setShowModal] = useState(false);  // 状态控制显示模态窗口
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
-    // 检查登录状态
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         if (isLoggedIn) {
-            // 如果用户已登录，可以重定向或执行其他操作
-            setLoginSuccess('已成功登录');
+            setLoginSuccess('login success');
         }
     }, []);
 
-    // 登录提交处理
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             const user = await login({ username: email, password });
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userEmail', email);
-            setLoginSuccess('Login Successful, Welcome Back!'); // 设置成功消息
-            setIsError(false); // 登录成功
-            setShowModal(true); // 显示登录成功的弹窗
+            setLoginSuccess('Login Successful, Welcome Back!');
+            setIsError(false);
+            setShowModal(true);
             setTimeout(() => {
-                setShowModal(false); // 2秒后自动关闭弹窗
-                navigate('/'); // 可能还需要重定向到主页或其他页面
-            }, 2000); // 2000毫秒后执行
+                setShowModal(false);
+                navigate('/');
+            }, 2000);
         } catch (error) {
-            console.error('登录失败:', error);
-            setLoginSuccess('Login Failed, Please Try Again'); // 设置失败消息
-            setIsError(true); // 登录失败
-            setShowModal(true); // 显示错误信息的弹窗
+            console.error('login fail:', error);
+            setLoginSuccess('Login Failed, Please Try Again');
+            setIsError(true);
+            setShowModal(true);
             setTimeout(() => {
-                setShowModal(false); // 也许这里也要自动关闭
+                setShowModal(false);
             }, 2000);
         }
     };
@@ -65,14 +62,14 @@ const Auth = () => {
 
       const handleMicrosoftLogin = async () => {
         try {
-            // 这里使用的是GET请求
+
             const response = await fetch('/api/auth/microsoft/url');
             if (response.ok) {
-                // 服务器应该发送一个包含URL的JSON对象，而不是一个重定向响应
+
                 const data = await response.json();
-                window.location.href = data.url; // 直接使用JSON对象中的URL进行跳转
+                window.location.href = data.url;
             } else {
-                // 处理错误情况
+
                 console.error('Failed to fetch the Microsoft auth URL.');
             }
         } catch (error) {
@@ -86,7 +83,7 @@ const Auth = () => {
 {showModal && (
     <div className="modal">
         <div className="modal-content">
-            {/* 根据 isError 状态选择对应的类名 */}
+            {}
             <p className={`modal-message ${isError ? 'error' : 'success'}`}>{loginSuccess}</p>
         </div>
     </div>
@@ -130,9 +127,9 @@ const Auth = () => {
         placeholder="Password"
         required
     />
-    {/* 显示登录按钮，而不考虑登出按钮 */}
+    {}
     <button type="submit" className="sign-in-button">Sign in</button>
-    {/* 如果需要，可以在这里添加其他按钮或表单元素 */}
+    {}
 </form>
             
             <div className="auth-footer">

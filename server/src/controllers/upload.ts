@@ -470,6 +470,8 @@ export const getvideo = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("trying to get video");
+
   try {
     const videoPath = path.join(__dirname, `../result/clip.mp4`);
     res.sendFile(videoPath);

@@ -22,7 +22,7 @@ function ResetPasswordPage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ password })  // 确保这里发送的是 { password: password }
+                body: JSON.stringify({ password })
             });
 
             if (response.ok) {

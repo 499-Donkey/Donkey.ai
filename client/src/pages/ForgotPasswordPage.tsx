@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { requestPasswordReset } from '../network/users_api';
 import '../styles/ForgotPasswordPage.css';
-import forgotpage from '../assets/forgotpage.png'; // 确保图像路径正确
+import forgotpage from '../assets/forgotpage.png';
 
 function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');  // 统一状态用于显示消息
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,10 +16,10 @@ function ForgotPasswordPage() {
             await requestPasswordReset(email);
             setMessage('A link to reset your password has been sent to your email.');
         } catch (error) {
-            // 即便出错，也显示同样的成功消息，以避免暴露邮箱信息
+
             setMessage('A link to reset your password has been sent to your email.');
         }
-        setTimeout(() => navigate('/auth'), 5000); // 跳转回登录页
+        setTimeout(() => navigate('/auth'), 5000);
     };
 
     return (

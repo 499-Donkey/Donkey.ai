@@ -91,7 +91,7 @@ const CreateAccount = () => {
             />
             <button type="submit" className="sign-in-button">Create account</button>
           </form>
-          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* 显示错误消息 */}
+          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* error show */}
           <Link to="/auth" className="create-account-link">Already have an Donkey Account? Sign in</Link>
           <p className="terms-service">
             By using Donkey.ai you agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
