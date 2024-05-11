@@ -313,6 +313,7 @@
   transition: all 0.3s;
   font-weight: bold;
   margin: 12px;
+  margin-bottom: 17px;
 }
 
 .extractbox button:hover {
@@ -320,3 +321,19 @@
   border-color: #0056b3;
   color: #0056b3;
 }
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  height: 100%; 
+
+  background-color: black; 
+  border-radius: 19px;
+}
+
+.video-container video {
+  width: 70%; 
+  height: auto; 
+}
+

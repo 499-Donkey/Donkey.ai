@@ -41,6 +41,11 @@ const Upload: React.FC = () => {
   const [preQuestions] = useState(PreQuestions);
   const [mode, setMode] = useState<string>("chat");
 
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+
+  const [videoReady, setVideoReady] = useState<boolean>(false);
+
   const [userEnter, setUserEnter] = useState<string>("");
   const [userEnterState, setUserEnterState] = useState<{
     messages: Message[];
@@ -168,7 +173,7 @@ const Upload: React.FC = () => {
         },
         body: JSON.stringify({ userEnter, history }),
       });
-      
+
       console.log('fetch called');
 
       const v_response = await fetch('/api/upload/video');
@@ -196,6 +201,37 @@ const Upload: React.FC = () => {
       console.error("Extract error:", error);
     }
   };
+
+  const handleTimelineSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log("Start Time:", startTime, "End Time:", endTime);
+    
+    try {
+      const response = await fetch("/api/upload/timeline", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ startTime, endTime }),
+      });
+
+      console.log('Timeline fetch called');
+
+      const v_response = await fetch('/api/upload/video');
+      console.log('video fetch called: ' + v_response);
+      if (v_response.ok) {
+        const videoBlob = await v_response.blob();
+        const url = URL.createObjectURL(videoBlob);
+        setVideoUrl(url);
+      } else {
+        console.error("Failed to fetch video:", v_response.statusText);
+      }
+
+    } catch (error) {
+      console.error("Error generating video:", error);
+    }
+  };
+
 
   return (
     <div className="upload-container">
@@ -369,7 +405,35 @@ const Upload: React.FC = () => {
             </button>
           </form>
 
-          <h3>Video Clip shows: </h3>
+
+          <form onSubmit={handleTimelineSubmit} style={{ position: "relative" }}>
+            <input
+              type="text"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              placeholder="Enter start time (e.g., 00:00:00)"
+              required
+              style={{ width: '48%', marginRight: '1%' }}
+            />
+            <input
+              type="text"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              placeholder="Enter end time (e.g., 00:05:00)"
+              required
+              style={{ width: '48%' }}
+            />
+            <button
+              type="submit"
+              style={{ position: "relative", top: 0, right: 0 }}
+            >
+              Submit
+            </button>
+          </form>
+
+          
+
+
           <div className="video show">
             {videoUrl && (
               <div className="video-container">
@@ -380,6 +444,7 @@ const Upload: React.FC = () => {
               </div>
             )}
           </div>
+
 
         </div>
       )}
