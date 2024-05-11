@@ -1,8 +1,73 @@
-/*home.css*/
-.contain{
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+
+.container {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.sections {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.section {
+    flex: 1; /* Each section takes equal width */
+    margin: 0 10px; /* Spacing between sections */
+    height: 600px;
+    padding: 20px;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 18px;
+}
+
+.section img {
+    max-width: 100%; /* Makes sure the image is not larger than the section */
+    height: 80%; /* Maintains the aspect ratio of the image */
+    margin-bottom: 15px; /* Adds some space between the image and the text */
+    border-radius: 18px;
+    
+}
+
+.section h2 {
+    margin-bottom: 15px;
+}
+
+
+.start-button {
+    padding: 0.5rem 17rem;
+    border: 2.5px solid #0056b3;
+    border-radius: 28px;
+    background-color: transparent;
+    color: #007bff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    margin: 30px;
+}
+
+.start-button:hover {
+    background-color: #e7f5ff;
+    border-color: #0056b3;
+    color: #0056b3;
+}
+
+.greeting-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 20px;
+    color: #2c7dd3; 
+}
+
+.funny-paragraph {
+    width: 85%;
+    margin: 0 auto; 
+    margin-top: 30px;
+    margin-bottom: 60px;
+    font-style: italic;
+    font-size: large;
+    color: #888; 
 }
