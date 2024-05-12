@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Script } from '../models/script';
+import "../styles/scripts.css";
 
 const Scripts: React.FC = () => {
     const [scripts, setScripts] = useState<Script[]>([]); 

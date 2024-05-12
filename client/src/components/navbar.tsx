@@ -59,7 +59,7 @@ const Navbar = () => {
       <div className="nav-links">
         <NavLink to="/" end className={({ isActive }) => isActive ? 'active-link' : ''}>Home</NavLink>
         <NavLink to="/upload" className={({ isActive }) => isActive ? 'active-link' : ''}>Upload</NavLink>
-        <NavLink to="/scripts" className={({ isActive }) => isActive ? 'active-link' : ''}>Scripts</NavLink>
+        <NavLink to="/scripts" className={({ isActive }) => isActive ? 'active-link' : ''}>Test</NavLink>
       </div>
       {showModal && (
             <div className="modal">
