@@ -1,5 +1,4 @@
 
-// AccountSetting.tsx
 import React, { useState } from 'react';
 import { updatePassword } from '../network/users_api'; 
 import '../styles/AccountSetting.css';
@@ -8,14 +7,14 @@ const AccountSetting = () => {
     const [activeTab, setActiveTab] = useState('general');
     const userEmail = localStorage.getItem('userEmail') || '';
     const [newPassword, setNewPassword] = useState('');
-    const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);  // 控制显示密码更新区域
+    const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);  
 
     const handlePasswordUpdate = async () => {
         try {
             await updatePassword(newPassword);
             alert('Password updated successfully!');
-            setNewPassword('');  // 清空密码输入
-            setShowPasswordUpdate(false);  // 隐藏密码更新区域
+            setNewPassword('');  
+            setShowPasswordUpdate(false);  
         } catch (error) {
             if (error instanceof Error) {
                 alert('Password update failed: ' + error.message);
@@ -26,7 +25,7 @@ const AccountSetting = () => {
     };
 
     const toggleChangePassword = () => {
-        setShowPasswordUpdate(!showPasswordUpdate);  // 切换显示更新密码区域
+        setShowPasswordUpdate(!showPasswordUpdate);  
     };
 
     const renderContent = () => {

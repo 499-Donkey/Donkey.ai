@@ -1,31 +1,26 @@
-/* AccountSetting.css */
-
-
-/* 添加或修改这些样式 */
 .general-settings-header {
-    font-size: 1.0rem; /* 放大标题字体 */
-    margin-bottom: 0.5rem; /* 调整间距 */
+    font-size: 1.0rem; 
+    margin-bottom: 0.5rem; 
 }
 
 .user-email {
-    font-weight: bold; /* 加粗字体 */
-    text-decoration: underline; /* 下划线 */
-    cursor: pointer; /* 鼠标悬停时显示指针 */
-    transition: color 0.3s; /* 颜色变化的过渡效果 */
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: color 0.3s; 
 }
 
 .user-email:hover {
-    color: #0056b3; /* 鼠标悬停时的颜色 */
+    color: #0056b3;
 }
 
 
 
 .forgot-password-link {
-    font-size: 1.0rem; /* 放大忘记密码链接字体 */
-    margin-top: 0.5rem; /* 调整上边距 */
-    cursor: pointer; /* 添加指针鼠标样式 */
-    color: #0056b3; /* 可选：改变链接颜色 */
-    text-decoration: underline; /* 可选：添加下划线 */
+    font-size: 1.0rem; 
+    margin-top: 0.5rem; 
+    cursor: pointer; 
+    color: #0056b3; 
+    text-decoration: underline; 
 }
 
 
@@ -37,6 +32,8 @@
     border-radius: 8px;
     overflow: hidden;
     background: #fff;
+    margin-top: 50px;
+    margin-bottom: 600px;
 }
 
 .settings-sidebar {

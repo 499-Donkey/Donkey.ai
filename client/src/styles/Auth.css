@@ -214,12 +214,12 @@
   padding: 10px 20px; /* 内填充 */
   margin-top: 10px; /* 上边距 */
   cursor: pointer; /* 鼠标指针为手形 */
-  border-radius: 4px; /* 圆角边框 */
   outline: none; /* 点击时无轮廓 */
 }
 
 .logout-button:hover {
   background-color: #d32f2f; /* 鼠标悬停时的背景色变深 */
+  color: white;
 }
 
 

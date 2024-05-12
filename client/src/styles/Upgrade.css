@@ -1,10 +1,10 @@
-/* Upgrade.css */
-
 .upgrade-container {
     display: flex;
     justify-content: center;
     padding: 2rem;
     gap: 2rem;
+    margin-top: 20px;
+    margin-bottom: 510px;
   }
   
   .plan {
@@ -73,10 +73,12 @@
   }
   
   .current-plan {
+    color: #007bff;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+    font-weight: 600;
     border-radius: 5px;
     display: inline-block;
   }

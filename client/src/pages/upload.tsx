@@ -4,7 +4,7 @@ import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
 import { FiTrash2, FiDownload } from "react-icons/fi";
 import { Message } from "../models/message";
-import extractDonkeyPic from '../assets/extract_donkey.png';
+
 
 const PreQuestions = [
   {
