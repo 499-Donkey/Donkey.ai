@@ -4,6 +4,7 @@ import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
 import { FiTrash2, FiDownload } from "react-icons/fi";
 import { Message } from "../models/message";
+import extractDonkeyPic from '../assets/extract_donkey.png';
 
 const PreQuestions = [
   {
@@ -436,7 +437,6 @@ const Upload: React.FC = () => {
 
           
 
-
           <div className="video-show">
             {videoUrl && (
               <div className="video-container">
@@ -447,6 +447,7 @@ const Upload: React.FC = () => {
               </div>
             )}
           </div>
+
 
 
         </div>

@@ -159,8 +159,8 @@
     transition: background-color 0.3s;
   }
   .user-image {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 10px;
   } 

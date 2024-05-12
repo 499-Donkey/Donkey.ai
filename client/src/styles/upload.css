@@ -322,16 +322,23 @@
   color: #0056b3;
 }
 
-.video-show{
+.video-show {
   border: 2px solid #000000;
-  border-radius: 20px;
-  margin-top: 40px;
+  border-radius: 19px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   height: 500px;
-  width: 100%; 
+  width: 100%;
+  background-image: url('../assets/extract_donkey.png');
+  background-size: 20%; 
+  background-repeat: no-repeat; 
+  background-position: center; 
+  background-color: black; 
 }
+
+
 
 .video-container {
   margin-top: 10px;
@@ -339,7 +346,7 @@
   width: 90%; 
   height: 500px;  
   align-items: center; 
-  background-color: rgb(68, 64, 64); 
+  
 }
 
 .video-container video {
