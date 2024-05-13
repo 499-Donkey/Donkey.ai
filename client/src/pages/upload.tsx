@@ -4,6 +4,9 @@ import "../styles/upload.css";
 import { getChatResponse } from "../network/chats_api";
 import { FiTrash2, FiDownload } from "react-icons/fi";
 import { Message } from "../models/message";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 
 
 const PreQuestions = [
@@ -62,6 +65,7 @@ const Upload: React.FC = () => {
   });
   const { messages, history } = userEnterState;
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setInitialization();
@@ -99,6 +103,8 @@ const Upload: React.FC = () => {
   const UploadSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    setLoading(true);
+
     if (filesList.length === 0) {
       alert("Please select a file to upload.");
       return;
@@ -125,6 +131,9 @@ const Upload: React.FC = () => {
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -259,9 +268,17 @@ const Upload: React.FC = () => {
             </li>
           ))}
         </ul>
-        <button className="button" type="button" onClick={UploadSubmit}>
-          Upload
-        </button>
+
+        <div>
+        <button className="button" type="button" onClick={UploadSubmit}>Upload</button>
+        {loading?
+        <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}open>
+        <CircularProgress color="inherit" />
+        </Backdrop>
+        :null}
+        </div>
+
       </div>
 
       <div className="result-container">

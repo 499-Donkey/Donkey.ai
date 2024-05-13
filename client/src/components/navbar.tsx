@@ -17,9 +17,6 @@ const Navbar = () => {
   const [userImage, setUserImage] = useState(userDefaultImage); 
   
   
-
-
-  
   // Generate user initials from username
   const userInitials = userName?.charAt(0).toUpperCase();
 
@@ -28,16 +25,16 @@ const Navbar = () => {
     try {
         await logout();
         localStorage.clear();
-        setShowModal(true); // 显示登出成功的弹窗
+        setShowModal(true);
         setTimeout(() => {
-            setShowModal(false); // 2秒后自动关闭弹窗
-            navigate('/'); // 重定向到首页
+            setShowModal(false);
+            navigate('/');
         }, 900);
     } catch (error) {
         console.error('Logout failed:', error);
         setShowModal(true);
         setTimeout(() => {
-            setShowModal(false);  // 即使失败也关闭窗口
+            setShowModal(false);
         }, 900);
     }
 };
