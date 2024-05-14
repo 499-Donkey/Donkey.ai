@@ -85,16 +85,13 @@
   margin-bottom: 5px;
 }
 
-/* .file-card:hover {
-  background-color: #f4f4f4;
-} */
-
 .removeButton {
   border: 1px solid #b0b0b0;
   background-color: #ffffff;
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
+  color: #6e6e6e;
 }
 
 .removeButton:hover {

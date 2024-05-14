@@ -14,23 +14,31 @@
 
 .section {
     flex: 1; /* Each section takes equal width */
-    margin: 0 10px; /* Spacing between sections */
-    height: 600px;
+    margin: 10px; /* Spacing between sections */
+    /* height: 600px; */
+    height: 50%;
     padding: 20px;
     border: 1px solid rgb(199, 199, 199);
     border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .section img {
-    max-width: 100%; /* Makes sure the image is not larger than the section */
-    height: 80%; /* Maintains the aspect ratio of the image */
-    margin-bottom: 15px; /* Adds some space between the image and the text */
+    max-width: 100%; 
+    max-height: calc(100% - 20%); 
+    height: 600px;
     border-radius: 18px;
-    
 }
 
 .section h2 {
     margin-bottom: 15px;
+}
+
+.section img {
+    margin-bottom: 8%;
 }
 
 
