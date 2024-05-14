@@ -27,10 +27,10 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@azure/msal-node": "^2.6.6",
     "@langchain/openai": "^0.0.26",
     "@langchain/pinecone": "^0.0.4",
     "@pinecone-database/pinecone": "^2.2.0",
-    "@azure/msal-node": "^2.6.6",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -48,7 +48,8 @@
     "langchain": "^0.1.31",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "openai-gpt-token-counter": "^1.1.1"
   },
   "description": ""
 }
