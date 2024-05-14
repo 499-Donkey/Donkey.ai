@@ -174,6 +174,8 @@ const Upload: React.FC = () => {
     }));
 
     try {
+      setLoading(true);
+
       console.log("extract function called");
       const response = await fetch("/api/upload/extract", {
         method: "POST",
@@ -205,6 +207,7 @@ const Upload: React.FC = () => {
         history: [...state.history, [question, data.text]],
       }));
 
+      setLoading(false);
     } catch (error) {
       console.error("Extract error:", error);
     }
@@ -275,7 +278,7 @@ const Upload: React.FC = () => {
         <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}open>
         <CircularProgress color="inherit" />
-        </Backdrop>
+         LOADING...</Backdrop>
         :null}
         </div>
 
@@ -418,12 +421,20 @@ const Upload: React.FC = () => {
               required
               style={{ paddingRight: "150px" }}
             />
+            <div>
             <button
               type="submit"
               style={{ position: "absolute", top: 0, right: 0 }}
             >
               Submit
             </button>
+            {loading?
+            <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}open>
+            <CircularProgress color="inherit" /> LOADING...
+            </Backdrop>
+            :null}
+            </div>
           </form>
 
 
