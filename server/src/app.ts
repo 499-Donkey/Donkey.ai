@@ -1,11 +1,11 @@
 import "dotenv/config";
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import scriptRoutes from "./routes/scripts";
 import userRoutes from "./routes/users";
 import uploadRoutes from "./routes/upload";
 import authRoutes from "./routes/auth";
 import morgan from "morgan";
-import createHttpError, { isHttpError } from "http-errors";
+import { isHttpError } from "http-errors";
 import session from "express-session";
 import env from "./util/validateEnv";
 import MongoStore from "connect-mongo";
@@ -16,7 +16,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:3000' // 允许这个源的跨源请求
+    origin: 'http://localhost:3000'
   }));
 
 app.use(session({
@@ -32,14 +32,17 @@ app.use(session({
     }),
 }));
 
-// 添加所有路由处理器
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/scripts", scriptRoutes);
 app.use("/api/upload", uploadRoutes);
 
-// 通用错误处理
-app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+app.get("/", (req: Request, res: Response) => {
+    res.send("Welcome to the application!");
+});
+
+//for error testing
+app.use((error: unknown, req: Request, res: Response) => {
     console.error(error);
     let errorMessage = "An unknown error occurred";
     let statusCode = 500;
@@ -50,12 +53,6 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     res.status(statusCode).json({ error: errorMessage });
 });
 
-// 根路由处理器
-app.get("/", (req: Request, res: Response) => {
-    res.send("Welcome to the application!");
-});
-
-// 404处理器 - 捕获所有其他路由
 //app.use((req, res, next) => {
  //   res.status(404).send('Endpoint not found');
 //});
