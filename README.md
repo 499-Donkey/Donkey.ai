@@ -29,7 +29,7 @@ To get started with Donkey.AI, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/donkey-ai.git`
 2. Navigate to the Project Directory: `cd donkey-ai`
-3. Add a `.env` file to the server folder by following the `env.example` file.
+3. Add a `.env` file to the server folder by following the `env.example` file (`env.example` in server/src).
 4. Install dependencies: `npm i`
 5. Build the Project: `npm run build`
 6. Start the application: Windows: `npm run start-win`, MacOS: `npm run start-mac`
